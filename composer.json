@@ -1,0 +1,39 @@
+{
+  "name": "zgldh/module-user",
+  "description": "User Module for zgldh/scaffold",
+  "keywords": [
+    "laravel",
+    "scaffold",
+    "user"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "require": {
+    "zgldh/scaffold": ">0.1",
+    "spatie/laravel-permission": "^1.5",
+    "zgldh/laravel-upload-manager": "^0.4.3"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "classmap": [
+    ],
+    "psr-4": {
+      "zgldh\\User\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+    ]
+  },
+  "scripts": {
+    "post-root-package-install": [
+    ],
+    "post-create-project-cmd": [
+    ],
+    "post-install-cmd": [
+    ],
+    "post-update-cmd": [
+    ]
+  }
+}
