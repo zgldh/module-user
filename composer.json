@@ -7,7 +7,6 @@
     "user"
   ],
   "license": "MIT",
-  "type": "module",
   "require": {
     "zgldh/scaffold": ">0.1",
     "spatie/laravel-permission": "^1.5",
