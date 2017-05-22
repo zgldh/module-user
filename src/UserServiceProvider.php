@@ -1,4 +1,4 @@
-<?php namespace zgldh\Scaffold;
+<?php namespace zgldh\User;
 
 use Illuminate\Support\ServiceProvider;
 
