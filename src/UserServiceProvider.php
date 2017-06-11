@@ -1,4 +1,4 @@
-<?php namespace zgldh\User;
+<?php namespace zgldh\ModuleUser;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -27,5 +27,6 @@ class UserServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
     }
 }

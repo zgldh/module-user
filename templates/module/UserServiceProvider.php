@@ -1,8 +1,6 @@
 <?php namespace $NAME$\User;
 
-use Illuminate\Support\ServiceProvider;
-
-class UserServiceProvider extends ServiceProvider
+class UserServiceProvider extends \zgldh\ModuleUser\UserServiceProvider
 {
 
     /**
@@ -23,7 +21,7 @@ class UserServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        $this->loadViewsFrom(__DIR__ . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'views',
-            'cosmota.user');
+        $this->loadViewsFrom(__DIR__ . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . 'views',
+            '$NAME$\User');
     }
 }
