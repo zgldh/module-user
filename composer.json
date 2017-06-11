@@ -18,7 +18,7 @@
     "classmap": [
     ],
     "psr-4": {
-      "zgldh\\User\\": "src/"
+      "zgldh\\ModuleUser\\": "src/"
     }
   },
   "autoload-dev": {
