@@ -9,8 +9,7 @@
   "license": "MIT",
   "require": {
     "zgldh/scaffold": ">0.1",
-    "spatie/laravel-permission": "^1.5",
-    "zgldh/laravel-upload-manager": "^0.4.3"
+    "spatie/laravel-permission": "^1.5"
   },
   "require-dev": {
   },
