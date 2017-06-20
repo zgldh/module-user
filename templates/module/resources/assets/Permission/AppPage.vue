@@ -2,13 +2,13 @@
   <div>
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>用户管理
-        <small>角色</small>
+      <h1>管理员权限
+        <small>权限列表</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-dashboard"></i> 控制台</a></li>
-        <li><a href="#">用户管理</a></li>
-        <li class="active">角色</li>
+        <li><a href="/"><i class="fa fa-dashboard"></i> 总览</a></li>
+        <li><a href="#">管理员权限</a></li>
+        <li class="active">权限列表</li>
       </ol>
     </section>
 
@@ -37,40 +37,21 @@
 
     </section>
     <!-- /.content -->
-
-    <form-dialog></form-dialog>
   </div>
 </template>
 
 <script type="javascript">
-  import Vue from 'vue';
   import datatablesHelper from 'resources/assets/js/commons/datatables-helper.js';
   import vueHelper from 'resources/assets/js/commons/vuejs.js';
-  import columns from './table-columns';
+  import columns from './TableColumns';
 
-  let emptyItem = {
-    id: null,
-    permissions: []
-  };
-  let appPageTable = null;
-  let resourceURL = "/user/role";
-  let datatablesConfig = datatablesHelper.buildDatatablesConfig(resourceURL, columns);
-  let vueConfig = vueHelper.buildVueConfig(resourceURL, datatablesConfig, emptyItem);
+  var resourceURL = "/admin/permission";
+  let datatablesConfig = datatablesHelper.buildDatatablesConfig({
+    resource: resourceURL
+  }, columns);
+  var vueConfig = vueHelper.buildVueConfig(resourceURL, datatablesConfig);
 
   export default vueConfig;
-
-  // Form Dialog definition
-  let formDialog = vueHelper.buildFormDialogConfig({
-    props: ['item'],
-    data: function () {
-      return {
-        permissions: window.PROMISSIONS
-      };
-    },
-    template: require('./form-fields.html')
-  });
-  Vue.component('form-dialog', formDialog);
-
 </script>
 
 <style lang="scss">

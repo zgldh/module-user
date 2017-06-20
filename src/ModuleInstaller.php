@@ -20,6 +20,7 @@ class ModuleInstaller extends BaseInstaller
     public function run()
     {
         $this->copyModuleFilesTo('User');
+
         $this->addServiceProvider('User', 'UserServiceProvider::class');
         $this->addRoute('User');
         $this->addToVueRoute('User');

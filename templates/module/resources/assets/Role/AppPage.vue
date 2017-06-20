@@ -2,13 +2,13 @@
   <div>
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>用户管理
-        <small>用户列表</small>
+      <h1>管理员角色
+        <small>角色列表</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-dashboard"></i> 控制台</a></li>
-        <li><a href="#">用户管理</a></li>
-        <li class="active">用户列表</li>
+        <li><a href="/"><i class="fa fa-dashboard"></i> 总览</a></li>
+        <li><a href="#">管理员角色</a></li>
+        <li class="active">角色列表</li>
       </ol>
     </section>
 
@@ -37,48 +37,22 @@
 
     </section>
     <!-- /.content -->
-
-    <form-dialog></form-dialog>
   </div>
 </template>
 
 <script type="javascript">
   import datatablesHelper from 'resources/assets/js/commons/datatables-helper.js';
   import vueHelper from 'resources/assets/js/commons/vuejs.js';
-  import {Vue} from 'resources/assets/js/commons/vuejs.js';
-  import columns from './table-columns';
+  import columns from './TableColumns';
 
-  let emptyItem = {
-    id: null,
-    name: '',
-    email: '',
-    password: null,
-    roles: [],
-    permissions: [],
-    gender: 'Male',
-    mobile: null,
-    is_active: 1,
-  };
-  var appPageTable = null;
-  var resourceURL = "/user";
-  var datatablesConfig = datatablesHelper.buildDatatablesConfig(resourceURL, columns);
-  var vueConfig = vueHelper.buildVueConfig(resourceURL, datatablesConfig, emptyItem);
+  let resourceURL = "/admin/role";
+  let datatablesConfig = datatablesHelper.buildDatatablesConfig({
+    resource: resourceURL,
+    with: ['permissions']
+  }, columns);
+  let vueConfig = vueHelper.buildVueConfig(resourceURL, datatablesConfig);
 
   export default vueConfig;
-
-  // Form Dialog definition
-  let formDialog = vueHelper.buildFormDialogConfig({
-    props: ['item'],
-    data: function () {
-      return {
-        permissions: window.PROMISSIONS,
-        roles: window.ROLES
-      };
-    },
-    template: require('./form-fields.html')
-  });
-  Vue.component('form-dialog', formDialog);
-
 </script>
 
 <style lang="scss">
