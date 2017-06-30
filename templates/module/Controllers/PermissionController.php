@@ -5,9 +5,7 @@ use $NAME$\User\Requests\CreatePermissionRequest;
 use $NAME$\User\Requests\UpdatePermissionRequest;
 use App\Http\Requests\IndexRequest;
 use App\Http\Requests\ShowRequest;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use zgldh\Scaffold\AppBaseController;
 
 class PermissionController extends AppBaseController
@@ -22,7 +20,7 @@ class PermissionController extends AppBaseController
     /**
      * Display a listing of the Permission.
      *
-     * @param Request $request
+     * @param IndexRequest $request
      * @return Response
      */
     public function index(IndexRequest $request)

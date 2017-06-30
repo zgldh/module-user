@@ -1,17 +1,18 @@
 <?php namespace $NAME$\User\Repositories;
 
-use InfyOm\Generator\Common\BaseRepository;
-use Spatie\Permission\Models\Role;
-use zgldh\Scaffold\DataTablesData;
+use $NAME$\User\Models\Role;
+use zgldh\Scaffold\BaseRepository;
 
 class RoleRepository extends BaseRepository
 {
-    use DataTablesData;
+    const ROLE_ADMIN = 'admin';
+
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name'
+        'name',
+        'label'
     ];
 
     /**

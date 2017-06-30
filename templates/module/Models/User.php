@@ -1,5 +1,6 @@
 <?php namespace $NAME$\User\Models;
 
+use $NAME$\User\Repositories\RoleRepository;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -37,9 +38,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'id'    => 'integer',
-        'name'  => 'string',
-        'email' => 'string'
+        'id'            => 'integer',
+        'name'          => 'string',
+        'email'         => 'string',
+        'is_active'     => 'integer',
+        'last_login_at' => 'datetime',
+        'login_times'   => 'integer',
     ];
 
     /**
@@ -66,5 +70,10 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_has_roles');
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole(RoleRepository::ROLE_ADMIN);
     }
 }

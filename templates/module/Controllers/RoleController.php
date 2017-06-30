@@ -5,9 +5,7 @@ use $NAME$\User\Requests\CreateRoleRequest;
 use $NAME$\User\Requests\UpdateRoleRequest;
 use App\Http\Requests\IndexRequest;
 use App\Http\Requests\ShowRequest;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use zgldh\Scaffold\AppBaseController;
 
 class RoleController extends AppBaseController
@@ -22,7 +20,7 @@ class RoleController extends AppBaseController
     /**
      * Display a listing of the Role.
      *
-     * @param Request $request
+     * @param IndexRequest $request
      * @return Response
      */
     public function index(IndexRequest $request)

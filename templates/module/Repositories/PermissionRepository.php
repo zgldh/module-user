@@ -1,17 +1,16 @@
 <?php namespace $NAME$\User\Repositories;
 
-use InfyOm\Generator\Common\BaseRepository;
-use Spatie\Permission\Models\Permission;
-use zgldh\Scaffold\DataTablesData;
+use $NAME$\User\Models\Permission;
+use zgldh\Scaffold\BaseRepository;
 
 class PermissionRepository extends BaseRepository
 {
-    use DataTablesData;
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name'
+        'name',
+        'label'
     ];
 
     /**

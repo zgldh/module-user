@@ -1,6 +1,7 @@
 <?php namespace $NAME$\User\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use $NAME$\User\Models\Permission;
 
 class CreatePermissionRequest extends FormRequest
 {
@@ -22,8 +23,9 @@ class CreatePermissionRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required'
-        ];
+        $rules = Permission::$rules;
+        $rules['name'] = 'required|unique:permissions';
+        $rules['label'] = 'required|unique:permissions';
+        return $rules;
     }
 }

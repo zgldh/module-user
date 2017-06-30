@@ -10,7 +10,8 @@ class Role extends BaseRole
     const UPDATED_AT = 'updated_at';
 
     public $fillable = [
-        'name'
+        'name',
+        'label',
     ];
 
     /**
@@ -19,8 +20,9 @@ class Role extends BaseRole
      * @var array
      */
     protected $casts = [
-        'id'   => 'integer',
-        'name' => 'string'
+        'id'    => 'integer',
+        'name'  => 'string',
+        'label' => 'string'
     ];
 
     /**
@@ -29,6 +31,7 @@ class Role extends BaseRole
      * @var array
      */
     public static $rules = [
-        'name' => 'required'
+        'name'  => 'required',
+        'label' => 'required'
     ];
 }

@@ -1,6 +1,7 @@
 <?php namespace $NAME$\User\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use $NAME$\User\Models\Permission;
 
 class UpdatePermissionRequest extends FormRequest
 {
@@ -22,8 +23,12 @@ class UpdatePermissionRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required'
-        ];
+        $permission = Permission::find($this->route()->getParameter('permission'));
+        $permissionId = $permission->id;
+
+        $rules = Permission::$rules;
+        $rules['name'] = 'required|unique:permissions,name,' . $permissionId;
+        $rules['label'] = 'required|unique:permissions,label,' . $permissionId;
+        return $rules;
     }
 }

@@ -1,6 +1,7 @@
 <?php namespace $NAME$\User\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use $NAME$\User\Models\Role;
 
 class CreateRoleRequest extends FormRequest
 {
@@ -22,8 +23,9 @@ class CreateRoleRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required'
-        ];
+        $rules = Role::$rules;
+        $rules['name'] = 'required|unique:roles';
+        $rules['label'] = 'required|unique:roles';
+        return $rules;
     }
 }

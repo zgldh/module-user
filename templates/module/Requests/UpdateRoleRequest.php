@@ -1,6 +1,7 @@
 <?php namespace $NAME$\User\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use $NAME$\User\Models\Role;
 
 class UpdateRoleRequest extends FormRequest
 {
@@ -22,8 +23,12 @@ class UpdateRoleRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => 'required'
-        ];
+        $role = Role::find($this->route()->getParameter('role'));
+        $roleId = $role->id;
+
+        $rules = Role::$rules;
+        $rules['name'] = 'required|unique:roles,name,' . $roleId;
+        $rules['label'] = 'required|unique:roles,label,' . $roleId;
+        return $rules;
     }
 }

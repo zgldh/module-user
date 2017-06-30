@@ -5,9 +5,7 @@ use $NAME$\User\Requests\CreateUserRequest;
 use $NAME$\User\Requests\UpdateUserRequest;
 use App\Http\Requests\IndexRequest;
 use App\Http\Requests\ShowRequest;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use zgldh\Scaffold\AppBaseController;
 
 class UserController extends AppBaseController
@@ -22,7 +20,7 @@ class UserController extends AppBaseController
     /**
      * Display a listing of the User.
      *
-     * @param Request $request
+     * @param IndexRequest $request
      * @return Response
      */
     public function index(IndexRequest $request)
