@@ -1,6 +1,7 @@
 <?php namespace zgldh\ModuleUser;
 
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\PermissionServiceProvider;
 
 /**
  * Created by PhpStorm.
@@ -18,6 +19,7 @@ class UserServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->register(PermissionServiceProvider::class);
     }
 
     /**
@@ -27,6 +29,5 @@ class UserServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
     }
 }

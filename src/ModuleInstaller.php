@@ -1,5 +1,8 @@
 <?php namespace zgldh\ModuleUser;
 
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Artisan;
+use Spatie\Permission\PermissionServiceProvider;
 use zgldh\Scaffold\Installer\ModuleInstaller as BaseInstaller;
 use zgldh\Scaffold\Installer\Utils;
 
@@ -25,5 +28,20 @@ class ModuleInstaller extends BaseInstaller
         $this->addRoute('User');
         $this->addToVueRoute('User');
         Utils::addAdminMenuItem($this->getModuleTemplateContent('menu.blade.php'));
+
+        // Install laravel-permission
+        App::register(PermissionServiceProvider::class);
+        Artisan::call('vendor:publish', [
+            '--provider' => PermissionServiceProvider::class,
+            '--tag'      => 'migrations']);
+        Artisan::call('vendor:publish', [
+            '--provider' => PermissionServiceProvider::class,
+            '--tag'      => 'config']);
+
+        // Publish migrations
+        $this->publishMigration('UpdatePermissionsTables', __DIR__ . '/../migrations/add_columns_to_users_table.php');
+
+        Artisan::call('migrate');
+        exec('composer dumpautoload');
     }
 }

@@ -14,6 +14,7 @@ class UserServiceProvider extends \zgldh\ModuleUser\UserServiceProvider
     public function register()
     {
         //
+        parent::register();
     }
 
     /**

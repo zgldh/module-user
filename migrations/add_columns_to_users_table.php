@@ -13,12 +13,18 @@ class AddColumnsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('gender',8)->nullable(); // Male, Female
+            $table->string('gender', 8)->nullable(); // Male, Female
             $table->string('mobile')->nullable();
             $table->tinyInteger('is_active')->default(1);
             $table->timestamp('last_login_at')->nullable();
             $table->integer('login_times')->default(0);
             $table->integer('avatar_id')->nullable();
+        });
+        Schema::table('roles', function (Blueprint $table) {
+            $table->string('label');
+        });
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->string('label');
         });
     }
 
@@ -36,6 +42,12 @@ class AddColumnsToUsersTable extends Migration
             $table->dropColumn('last_login_at');
             $table->dropColumn('login_times');
             $table->dropColumn('avatar_id');
+        });
+        Schema::table('roles', function (Blueprint $table) {
+            $table->dropColumn('label');
+        });
+        Schema::table('permissions', function (Blueprint $table) {
+            $table->dropColumn('label');
         });
     }
 }
