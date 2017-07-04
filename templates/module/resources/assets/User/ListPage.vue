@@ -1,0 +1,253 @@
+<template>
+  <div class="admin-list-page">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>用户管理
+        <small>用户资料记录</small>
+      </h1>
+      <ol class="breadcrumb">
+        <li>
+          <router-link to="/"><i class="fa fa-dashboard"></i> 总览</router-link>
+        </li>
+        <li>用户管理</li>
+        <li class="active">用户资料记录</li>
+      </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="box">
+        <div class="box-header with-border">
+          <div class="buttons">
+            <el-button type="primary" @click="onCreate"><i class="fa fa-plus"></i> 添加用户</el-button>
+            <el-button type="danger" @click="onBundleDelete" :disabled="!selectedItems.length"><i
+                    class="fa fa-trash"></i>
+              删除用户
+            </el-button>
+          </div>
+          <div class="search">
+            <el-form :inline="true" :model="searchForm">
+              <el-form-item label="审批人">
+                <el-input v-model="searchForm.user" placeholder="审批人"></el-input>
+              </el-form-item>
+              <el-form-item label="审批人">
+                <el-input v-model="searchForm.user" placeholder="审批人"></el-input>
+              </el-form-item>
+              <el-form-item label="审批人">
+                <el-input v-model="searchForm.user" placeholder="审批人"></el-input>
+              </el-form-item>
+
+              <el-form-item label="活动区域">
+                <el-select v-model="searchForm.region" placeholder="活动区域">
+                  <el-option label="区域一" value="shanghai"></el-option>
+                  <el-option label="区域二" value="beijing"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="onSubmitSearch">查询</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <div class="box-body">
+          <div class="datatable-container">
+            <!-- 采用 datatables 标准-->
+            <el-row class="tools">
+              <el-col :span="4">
+                <span class="page-size">显示
+                <el-select v-model="pageSize" style="width: 80px"
+                           @change="handleSizeChange">
+                  <el-option
+                          v-for="item in pageSizeList"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                  </el-option>
+                </el-select>
+                  项结果</span>
+              </el-col>
+              <el-col :span="12">
+                <el-pagination
+                        @current-change="handleCurrentChange"
+                        :current-page="currentPage"
+                        :page-size="pageSize==-1?1:pageSize"
+                        :layout="pageSize==-1?'total':'total, prev, pager, next, jumper'"
+                        :total="400">
+                </el-pagination>
+              </el-col>
+              <el-col :span="8">
+                <el-input class="auto-search" style="width: 200px;float: right;"
+                          placeholder="模糊搜索"
+                          icon="search"
+                          v-model="searchTerm">
+                </el-input>
+              </el-col>
+            </el-row>
+
+          </div>
+          <div class="datatable" style="margin-top:1em;">
+            <el-table
+                    :data="tableData"
+                    border
+                    style="width: 100%"
+                    max-height="500"
+                    :default-sort="{prop: 'date', order: 'descending'}"
+            >
+              <el-table-column
+                      fixed
+                      type="selection"
+                      width="55">
+              </el-table-column>
+              <el-table-column
+                      prop="date"
+                      label="日期"
+                      sortable
+                      width="180">
+              </el-table-column>
+              <el-table-column
+                      prop="name"
+                      label="姓名"
+                      sortable
+                      width="180">
+              </el-table-column>
+              <el-table-column
+                      prop="address"
+                      label="地址"
+                      show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column
+                      prop="date"
+                      label="日期"
+                      sortable
+                      width="180">
+              </el-table-column>
+              <el-table-column
+                      prop="name"
+                      label="姓名"
+                      sortable
+                      width="180">
+              </el-table-column>
+              <el-table-column
+                      prop="address"
+                      label="地址"
+                      show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column
+                      prop="date"
+                      label="日期"
+                      sortable
+                      width="180">
+              </el-table-column>
+              <el-table-column
+                      prop="name"
+                      label="姓名"
+                      sortable
+                      width="180">
+              </el-table-column>
+              <el-table-column
+                      prop="address"
+                      label="地址"
+                      show-overflow-tooltip>
+              </el-table-column>
+              <el-table-column
+                      fixed="right"
+                      label="操作"
+                      width="100">
+                <template scope="scope">
+                  <el-button @click="handleClick" type="text" size="small">查看</el-button>
+                  <el-button type="text" size="small">编辑</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </div>
+        <!-- /.box-body -->
+
+        <div class="box-footer">
+          <el-button type="primary" @click="onCreate"><i class="fa fa-plus"></i> 添加用户</el-button>
+          <el-button type="danger" @click="onBundleDelete" :disabled="!selectedItems.length"><i class="fa fa-trash"></i>
+            删除用户
+          </el-button>
+        </div>
+      </div>
+
+    </section>
+    <!-- /.content -->
+  </div>
+</template>
+
+<script type="javascript">
+  let resourceURL = "/user";
+
+  export default {
+    data: function () {
+      let data = {
+        searchTerm: null,
+        currentPage: 1,
+        pageSize: 25,
+        pageSizeList: [
+          {
+            label: 25,
+            value: 25
+          },
+          {
+            label: 50,
+            value: 50
+          },
+          {
+            label: 100,
+            value: 100
+          },
+          {
+            label: '全部',
+            value: -1
+          }
+        ],
+        selectedItems: [],
+        searchForm: {},
+        tableData: []
+      };
+      for (let i = 0; i < 50; i++) {
+        data.tableData.push({
+          date: '2016-05-01',
+          name: '王小虎' + Math.random(),
+          province: '上海',
+          city: '普陀区',
+          address: '上海市普陀区金沙江路 1518 弄',
+          zip: 200333
+        });
+      }
+      return data;
+    },
+    methods: {
+      onSubmitSearch: function () {
+        alert('onSubmitSearch');
+      },
+      onCreate: function () {
+        alert('onCreate');
+      },
+      onBundleDelete: function () {
+        alert('onBundleDelete');
+      },
+      handleClick: function () {
+        alert('handleClick');
+      },
+      handleSizeChange: function () {
+        alert('handleSizeChange');
+      },
+      handleCurrentChange: function () {
+        alert('handleCurrentChange');
+      }
+    }
+  };
+
+</script>
+
+<style lang="scss">
+  .search {
+    margin-top: 1em;
+  }
+</style>

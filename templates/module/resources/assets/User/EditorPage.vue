@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="admin-editor-page">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>用户管理
@@ -60,50 +60,14 @@
                       v-if="item.$errors.has('name')">{{item.$errors.get('name')}}</span>
               </div>
             </div>
-            <!--<div class="form-group" :class="{'has-error': item.$errors.has('gender')}">-->
-              <!--<label for="field-gender" class="col-sm-2 control-label">性别</label>-->
-              <!--<div class="col-sm-10">-->
-                <!--<label class="radio-inline">-->
-                  <!--<input type="radio" id="field-gender-Male" value="Male"-->
-                         <!--v-model="item.gender">男-->
-                <!--</label>-->
-                <!--<label class="radio-inline">-->
-                  <!--<input type="radio" id="field-gender-Female" value="Female"-->
-                         <!--v-model="item.gender">女-->
-                <!--</label>-->
-                <!--<span class="help-block"-->
-                      <!--v-if="item.$errors.has('gender')">{{item.$errors.get('gender')}}</span>-->
-              <!--</div>-->
-            <!--</div>-->
             <div class="form-group" :class="{'has-error': item.$errors.has('avatar')}">
               <label for="field-avatar" class="col-sm-2 control-label">头像</label>
               <div class="col-sm-10">
                 <!--<upload-file class="form-control" id="field-avatar" v-model="item.avatar"></upload-file>-->
-                <image-preview
-                        :enable-upload="true"
-                        v-model="item.avatar"
-                        name="cover"
-                        :action="'/upload'"
-                        label="" style="height: 200px; width: 200px;" id="field-avatar">
-                </image-preview>
                 <span class="help-block">支持≤3MB，JPG、JPEG、PNG格式文件</span>
                 <span class="help-block" v-if="item.$errors.has('avatar')">{{item.$errors.get('avatar')}}</span>
               </div>
             </div>
-            <!--<div class="form-group" :class="{'has-error': item.$errors.has('is_active')}">-->
-            <!--<label for="field-is_active" class="col-sm-2 control-label">激活</label>-->
-            <!--<div class="col-sm-10">-->
-            <!--<label class="radio-inline">-->
-            <!--<input type="radio" id="field-is_active-1" value="1"-->
-            <!--v-model="item.is_active">激活-->
-            <!--</label>-->
-            <!--<label class="radio-inline">-->
-            <!--<input type="radio" id="field-is_active-2" value="2"-->
-            <!--v-model="item.is_active">禁用-->
-            <!--</label>-->
-            <!--<span class="help-block" v-if="item.$errors.has('is_active')">{{item.$errors.get('is_active')}}</span>-->
-            <!--</div>-->
-            <!--</div>-->
             <div class="form-group" :class="{'has-error': item.$errors.has('password')}">
               <label for="password" class="col-sm-2 control-label">密码 <span class="error">*</span></label>
 
@@ -134,46 +98,19 @@
 </template>
 
 <script type="javascript">
-  import {Vue} from 'resources/assets/js/commons/vuejs.js';
-  import {alert} from 'resources/assets/js/components/SweetAlertDialogs';
-  import ErrorsBuilder from 'resources/assets/js/commons/ErrorsBuilder.js';
-  import ImagePreview from 'resources/assets/js/components/ImagePreview.vue';
 
-  var resourceURL = "/user";
-  // var resource = Vue.resource(resourceURL + '{/id}');
-  var resource = Vue.resource(resourceURL + '{/id}?_with=avatar');
-  var vueConfig = {
+  var resource = Vue.resource('/user{/id}?_with=avatar');
+  export default  {
     data: function () {
-      return {
-        item: {
-          id: null,
-          name: '',
-          email: '',
-          password: null,
-          // roles: [],
-          // permissions: [],
-          gender: 'Male',
-          avatar: null,
-          mobile: null,
-          is_active: 1,
-          region: '中国',
-          $errors: ErrorsBuilder()
-        },
-        saving: false,
-        // permissions: [],
-        // roles: [],
-      };
+      return {};
     },
-    components: {
-      'image-preview': ImagePreview
-    },
+    components: {},
     beforeRouteEnter (to, from, next) {
       if (to.params.id) {
         return resource.get({id: to.params.id}).then(function (result) {
           next(function (vm) {
             if (result.data.data) {
               vm.item = result.data.data;
-              vm.item.$errors = ErrorsBuilder();
             }
           });
         }).catch(function (err) {
@@ -211,7 +148,6 @@
         }).then(function (result) {
           this.saving = false;
           this.item = result.data.data;
-          this.item.$errors = ErrorsBuilder();
         }.bind(this)).catch(function (err) {
           this.saving = false;
           if (err.status == 422) {
@@ -227,8 +163,6 @@
       },
     }
   };
-  export default vueConfig;
-
 </script>
 
 <style lang="scss">

@@ -26,6 +26,30 @@ class AddColumnsToUsersTable extends Migration
         Schema::table('permissions', function (Blueprint $table) {
             $table->string('label');
         });
+
+        $this->createBasicAdmin();
+    }
+
+    private function createBasicAdmin()
+    {
+        $user = \$NAME$\User\Models\User::firstOrNew(['name' => 'admin']);
+        $user->email = 'admin@email.com';
+        $user->password = bcrypt('123456');
+        $user->save();
+
+        $role = \$NAME$\User\Models\Role::firstOrNew(['name' => 'admin']);
+        $role->label = $role->label ?: '管理员';
+        $role->save();
+        if (!$user->hasRole($role)) {
+            $user->assignRole($role);
+        }
+
+        $permission = \$NAME$\User\Models\Permission::firstOrNew(['name' => 'can-manage-user']);
+        $permission->label = $permission->label ?: '管理用户';
+        $permission->save();
+        if (!$role->hasPermissionTo($permission)) {
+            $role->givePermissionTo($permission);
+        }
     }
 
     /**
