@@ -42,6 +42,35 @@ class ModuleInstaller extends BaseInstaller
         $this->publishMigration('UpdatePermissionsTables', __DIR__ . '/../migrations/add_columns_to_users_table.php');
 
         Artisan::call('migrate');
+
+        $this->createBasicAdmin();
+
         exec('composer dumpautoload');
+    }
+
+    private function createBasicAdmin()
+    {
+        $ns = $this->moduleRootNamespace();
+        $user = app($ns . '\User\Models\User');
+        $user = $user->firstOrNew(['name' => 'admin']);
+        $user->email = 'admin@email.com';
+        $user->password = bcrypt('123456');
+        $user->save();
+
+        $role = app($ns . '\User\Models\Role');
+        $role = $role->firstOrNew(['name' => 'super-admin']);
+        $role->label = '超级管理员';
+        $role->save();
+        if (!$user->hasRole($role)) {
+            $user->assignRole($role);
+        }
+
+        $permission = app($ns . '\User\Models\Permission');
+        $permission = $permission->firstOrNew(['name' => 'can-manage-user']);
+        $permission->label = $permission->label ?: '管理用户';
+        $permission->save();
+        if (!$role->hasPermissionTo($permission)) {
+            $role->givePermissionTo($permission);
+        }
     }
 }
