@@ -27,6 +27,7 @@ class ModuleInstaller extends BaseInstaller
         $this->addServiceProvider('User', 'UserServiceProvider::class');
         $this->addRoute('User');
         $this->addToVueRoute('User');
+        $this->updateAuthConfig();
         Utils::addAdminMenuItem($this->getModuleTemplateContent('menu.blade.php'));
 
         // Install laravel-permission
@@ -72,5 +73,12 @@ class ModuleInstaller extends BaseInstaller
         if (!$role->hasPermissionTo($permission)) {
             $role->givePermissionTo($permission);
         }
+    }
+
+    private function updateAuthConfig()
+    {
+        $moduleRoot = $this->moduleRootNamespace();
+        $replacement = ["'model' => App\User::class" => "'model' => {$moduleRoot}\User\Models\User::class"];
+        Utils::replaceFilePlaceholders(config_path('auth.php'), $replacement, null, null);
     }
 }
