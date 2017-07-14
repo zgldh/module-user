@@ -5,7 +5,7 @@ use zgldh\Scaffold\BaseRepository;
 
 class RoleRepository extends BaseRepository
 {
-    const ROLE_ADMIN = 'admin';
+    const ROLE_SUPER_ADMIN = 'super-admin';
 
     /**
      * @var array

@@ -74,6 +74,6 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->hasRole(RoleRepository::ROLE_ADMIN);
+        return $this->hasRole(RoleRepository::ROLE_SUPER_ADMIN);
     }
 }
