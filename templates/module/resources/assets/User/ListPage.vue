@@ -95,6 +95,7 @@
                     style="width: 100%"
                     max-height="500"
                     :default-sort="{prop: 'date', order: 'descending'}"
+                    ref="table"
             >
               <el-table-column
                       fixed
@@ -102,54 +103,38 @@
                       width="55">
               </el-table-column>
               <el-table-column
-                      prop="date"
-                      label="日期"
-                      sortable
-                      width="180">
-              </el-table-column>
-              <el-table-column
                       prop="name"
-                      label="姓名"
+                      label="Name"
                       sortable
+                      show-overflow-tooltip
                       width="180">
               </el-table-column>
               <el-table-column
-                      prop="address"
-                      label="地址"
+                      prop="email"
+                      label="Email"
+                      sortable
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
-                      prop="date"
-                      label="日期"
+                      prop="is_active"
+                      label="Is Active"
                       sortable
-                      width="180">
-              </el-table-column>
-              <el-table-column
-                      prop="name"
-                      label="姓名"
-                      sortable
-                      width="180">
-              </el-table-column>
-              <el-table-column
-                      prop="address"
-                      label="地址"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
-                      prop="date"
-                      label="日期"
+                      prop="last_login_at"
+                      label="Last Login"
                       sortable
-                      width="180">
+                      show-overflow-tooltip>
+                <template scope="scope">
+                  <el-tag>{{ scope.row.last_login_at }}</el-tag>
+                  <el-tag type="grey">{{ scope.row.login_times }}</el-tag>
+                </template>
               </el-table-column>
               <el-table-column
-                      prop="name"
-                      label="姓名"
+                      prop="created_at"
+                      label="Created At"
                       sortable
-                      width="180">
-              </el-table-column>
-              <el-table-column
-                      prop="address"
-                      label="地址"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
@@ -180,68 +165,20 @@
 </template>
 
 <script type="javascript">
-  let resourceURL = "/user";
+  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
 
   export default {
+    mixins: [mixin],
     data: function () {
       let data = {
-        searchTerm: null,
-        currentPage: 1,
-        pageSize: 25,
-        pageSizeList: [
-          {
-            label: 25,
-            value: 25
-          },
-          {
-            label: 50,
-            value: 50
-          },
-          {
-            label: 100,
-            value: 100
-          },
-          {
-            label: '全部',
-            value: -1
-          }
-        ],
-        selectedItems: [],
-        searchForm: {},
-        tableData: []
+        resource: '/user',
+        datatablesParameters: {
+          order: [[0, 'desc']],
+        }
       };
-      for (let i = 0; i < 50; i++) {
-        data.tableData.push({
-          date: '2016-05-01',
-          name: '王小虎' + Math.random(),
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        });
-      }
       return data;
     },
-    methods: {
-      onSubmitSearch: function () {
-        alert('onSubmitSearch');
-      },
-      onCreate: function () {
-        alert('onCreate');
-      },
-      onBundleDelete: function () {
-        alert('onBundleDelete');
-      },
-      handleClick: function () {
-        alert('handleClick');
-      },
-      handleSizeChange: function () {
-        alert('handleSizeChange');
-      },
-      handleCurrentChange: function () {
-        alert('handleCurrentChange');
-      }
-    }
+    methods: {}
   };
 
 </script>
