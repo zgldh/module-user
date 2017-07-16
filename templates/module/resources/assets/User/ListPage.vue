@@ -165,7 +165,7 @@
 </template>
 
 <script type="javascript">
-  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
+  import { mixin } from "resources/assets/js/commons/ListHelpers.js";
 
   export default {
     mixins: [mixin],
@@ -173,7 +173,7 @@
       let data = {
         resource: '/user',
         datatablesParameters: {
-          order: [[0, 'desc']],
+          order: [{column: 0, dir: 'desc'}],
         }
       };
       return data;
