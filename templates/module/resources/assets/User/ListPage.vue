@@ -26,6 +26,10 @@
               删除用户
             </el-button>
           </div>
+        </div>
+        <!-- /.box-header -->
+        <!-- form start -->
+        <div class="box-body datatable-loading-section">
           <div class="search">
             <el-form :inline="true" :model="searchForm">
               <el-form-item label="审批人">
@@ -49,10 +53,7 @@
               </el-form-item>
             </el-form>
           </div>
-        </div>
-        <!-- /.box-header -->
-        <!-- form start -->
-        <div class="box-body">
+
           <div class="datatable-container">
             <!-- 采用 datatables 标准-->
             <el-row class="tools">
@@ -127,8 +128,8 @@
                       sortable
                       show-overflow-tooltip>
                 <template scope="scope">
-                  <el-tag>{{ scope.row.last_login_at }}</el-tag>
-                  <el-tag type="grey">{{ scope.row.login_times }}</el-tag>
+                  <el-tag v-if="scope.row.last_login_at">{{ scope.row.last_login_at }}</el-tag>
+                  <el-tag type="grey" v-if="scope.row.login_times">{{ scope.row.login_times }}</el-tag>
                 </template>
               </el-table-column>
               <el-table-column
@@ -165,7 +166,7 @@
 </template>
 
 <script type="javascript">
-  import { mixin } from "resources/assets/js/commons/ListHelpers.js";
+  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
 
   export default {
     mixins: [mixin],
