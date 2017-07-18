@@ -59,10 +59,10 @@
             <el-row class="tools">
               <el-col :span="4">
                 <span class="page-size">显示
-                <el-select v-model="pageSize" style="width: 80px"
+                <el-select v-model="pagination.pageSize" style="width: 80px"
                            @change="handleSizeChange">
                   <el-option
-                          v-for="item in pageSizeList"
+                          v-for="item in pagination.pageSizeList"
                           :key="item.value"
                           :label="item.label"
                           :value="item.value">
@@ -72,11 +72,11 @@
               </el-col>
               <el-col :span="12">
                 <el-pagination
-                        @current-change="handleCurrentChange"
-                        :current-page="currentPage"
-                        :page-size="pageSize==-1?1:pageSize"
-                        :layout="pageSize==-1?'total':'total, prev, pager, next, jumper'"
-                        :total="400">
+                        @current-change="handlePageChange"
+                        :current-page="pagination.currentPage"
+                        :page-size="pagination.pageSize==-1?1:pagination.pageSize"
+                        :layout="pagination.pageSize==-1?'total':'total, prev, pager, next, jumper'"
+                        :total="pagination.totalCount">
                 </el-pagination>
               </el-col>
               <el-col :span="8">
@@ -97,6 +97,7 @@
                     style="width: 100%"
                     max-height="500"
                     :default-sort="{prop: 'date', order: 'descending'}"
+                    @sort-change="onSortChange"
                     ref="table"
             >
               <el-table-column
@@ -107,26 +108,26 @@
               <el-table-column
                       prop="name"
                       label="Name"
-                      sortable
+                      sortable="custom"
                       show-overflow-tooltip
                       width="180">
               </el-table-column>
               <el-table-column
                       prop="email"
                       label="Email"
-                      sortable
+                      sortable="custom"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
                       prop="is_active"
                       label="Is Active"
-                      sortable
+                      sortable="custom"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
                       prop="last_login_at"
                       label="Last Login"
-                      sortable
+                      sortable="custom"
                       show-overflow-tooltip>
                 <template scope="scope">
                   <el-tag v-if="scope.row.last_login_at">{{ scope.row.last_login_at }}</el-tag>
@@ -136,7 +137,7 @@
               <el-table-column
                       prop="created_at"
                       label="Created At"
-                      sortable
+                      sortable="custom"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
@@ -167,7 +168,7 @@
 </template>
 
 <script type="javascript">
-  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
+  import { mixin } from "resources/assets/js/commons/ListHelpers.js";
 
   export default {
     mixins: [mixin],
@@ -175,7 +176,7 @@
       let data = {
         resource: '/user',
         datatablesParameters: {
-          order: [{column: 0, dir: 'desc'}],
+          order: [{column: 'name', dir: 'desc'}],
         }
       };
       return data;
