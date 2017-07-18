@@ -83,7 +83,8 @@
                 <el-input class="auto-search" style="width: 200px;float: right;"
                           placeholder="模糊搜索"
                           icon="search"
-                          v-model="searchTerm">
+                          v-model="datatablesParameters.search.value"
+                          @change="onAutoSearchChanged">
                 </el-input>
               </el-col>
             </el-row>
