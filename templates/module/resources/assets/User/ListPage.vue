@@ -82,8 +82,9 @@
               <el-col :span="8">
                 <el-input class="auto-search" style="width: 200px;float: right;"
                           placeholder="模糊搜索"
-                          icon="search"
                           v-model="datatablesParameters.search.value"
+                          :icon="datatablesParameters.search.value?'close':'search'"
+                          :on-icon-click="onAutoSearchIconClick"
                           @change="onAutoSearchChanged">
                 </el-input>
               </el-col>
@@ -168,7 +169,7 @@
 </template>
 
 <script type="javascript">
-  import { mixin } from "resources/assets/js/commons/ListHelpers.js";
+  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
 
   export default {
     mixins: [mixin],
