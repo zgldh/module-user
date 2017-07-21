@@ -31,23 +31,31 @@
         <!-- form start -->
         <div class="box-body datatable-loading-section">
           <div class="search">
-            <el-form :inline="true" :model="searchForm">
-              <el-form-item label="审批人">
-                <el-input v-model="searchForm.user" placeholder="审批人"></el-input>
+            <el-form :inline="true" :model="searchForm" ref="searchForm">
+              <el-form-item label="Name">
+                <el-input v-model="searchForm.name" placeholder="Name" column="name" operator="like"></el-input>
               </el-form-item>
-              <el-form-item label="审批人">
-                <el-input v-model="searchForm.user" placeholder="审批人"></el-input>
+              <el-form-item label="Email">
+                <el-input v-model="searchForm.email" placeholder="Email" column="email" operator="like"></el-input>
               </el-form-item>
-              <el-form-item label="审批人">
-                <el-input v-model="searchForm.user" placeholder="审批人"></el-input>
-              </el-form-item>
-
-              <el-form-item label="活动区域">
-                <el-select v-model="searchForm.region" placeholder="活动区域">
-                  <el-option label="区域一" value="shanghai"></el-option>
-                  <el-option label="区域二" value="beijing"></el-option>
+              <el-form-item label="Is Active">
+                <el-select v-model="searchForm.is_active" placeholder="Select..." clearable
+                           column="is_active" operator="=">
+                  <el-option label="Active" value="1"></el-option>
+                  <el-option label="Inactive" value="0"></el-option>
                 </el-select>
               </el-form-item>
+              <el-form-item label="Created At">
+                <el-date-picker
+                        v-model="searchForm.created_at"
+                        type="daterange"
+                        placeholder="选择日期范围"
+                        clearable
+                        column="created_at"
+                        operator="range">
+                </el-date-picker>
+              </el-form-item>
+
               <el-form-item>
                 <el-button type="primary" @click="onSubmitSearch">查询</el-button>
               </el-form-item>
@@ -123,12 +131,14 @@
                       prop="is_active"
                       label="Is Active"
                       sortable="custom"
+                      searchable="false"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
                       prop="last_login_at"
                       label="Last Login"
                       sortable="custom"
+                      searchable="false"
                       show-overflow-tooltip>
                 <template scope="scope">
                   <el-tag v-if="scope.row.last_login_at">{{ scope.row.last_login_at }}</el-tag>
@@ -139,6 +149,7 @@
                       prop="created_at"
                       label="Created At"
                       sortable="custom"
+                      searchable="false"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
@@ -178,6 +189,12 @@
         resource: '/user',
         datatablesParameters: {
           order: [{column: 'name', dir: 'desc'}],
+        },
+        searchForm: {
+          name: null,
+          email: null,
+          is_active: null,
+          created_at: null
         }
       };
       return data;
@@ -190,5 +207,16 @@
 <style lang="scss">
   .search {
     margin-top: 1em;
+  }
+
+  .datatable-container {
+    .tools {
+      .el-pagination {
+        &, * {
+          font-size: 14px !important;
+        }
+        margin-top: 2px;
+      }
+    }
   }
 </style>
