@@ -57,7 +57,10 @@
               </el-form-item>
 
               <el-form-item>
-                <el-button type="primary" @click="onSubmitSearch">查询</el-button>
+                <el-button-group>
+                  <el-button type="primary" @click="onSubmitSearch">查询</el-button>
+                  <el-button type="button" @click="onResetSearch">清空</el-button>
+                </el-button-group>
               </el-form-item>
             </el-form>
           </div>
@@ -180,7 +183,7 @@
 </template>
 
 <script type="javascript">
-  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
+  import { mixin } from "resources/assets/js/commons/ListHelpers.js";
 
   export default {
     mixins: [mixin],
