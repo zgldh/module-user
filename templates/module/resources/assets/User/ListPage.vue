@@ -21,7 +21,7 @@
         <div class="box-header with-border">
           <div class="buttons">
             <el-button type="primary" @click="onCreate"><i class="fa fa-plus"></i> 添加用户</el-button>
-            <el-button type="danger" @click="onBundleDelete" :disabled="!selectedItems.length"><i
+            <el-button type="danger" @click="onBundleDelete" :disabled="selectedItems.length==0"><i
                     class="fa fa-trash"></i>
               删除用户
             </el-button>
@@ -71,7 +71,7 @@
               <el-col :span="4">
                 <span class="page-size">显示
                 <el-select v-model="pagination.pageSize" style="width: 80px"
-                           @change="handleSizeChange">
+                           @change="onPageSizeChange">
                   <el-option
                           v-for="item in pagination.pageSizeList"
                           :key="item.value"
@@ -83,7 +83,7 @@
               </el-col>
               <el-col :span="12">
                 <el-pagination
-                        @current-change="handlePageChange"
+                        @current-change="onPageChange"
                         :current-page="pagination.currentPage"
                         :page-size="pagination.pageSize==-1?1:pagination.pageSize"
                         :layout="pagination.pageSize==-1?'total':'total, prev, pager, next, jumper'"
@@ -110,6 +110,7 @@
                     max-height="500"
                     :default-sort="{prop: 'date', order: 'descending'}"
                     @sort-change="onSortChange"
+                    @selection-change="onSelectionChange"
                     ref="table"
             >
               <el-table-column
@@ -158,10 +159,14 @@
               <el-table-column
                       fixed="right"
                       label="操作"
-                      width="100">
+                      width="120">
                 <template scope="scope">
-                  <el-button @click="handleClick" type="text" size="small">查看</el-button>
-                  <el-button type="text" size="small">编辑</el-button>
+                  <el-button-group>
+                    <el-button @click="onEditClick(scope.row,scope.column,scope.$index,scope.store)" type="default"
+                               size="small" icon="edit" title="编辑"></el-button>
+                    <el-button @click="onDeleteClick(scope.row,scope.column,scope.$index,scope.store)" type="danger"
+                               size="small" icon="delete" title="删除"></el-button>
+                  </el-button-group>
                 </template>
               </el-table-column>
             </el-table>
@@ -202,7 +207,33 @@
       };
       return data;
     },
-    methods: {}
+    methods: {
+      onDeleteClick: function (row, column, $index, store) {
+        return this._onDeleteClick({
+          url: '/user/' + row.id,
+          params: {},
+          confirmText: '确认要删除吗？',
+          messageText: '删除完毕'
+        }).then(result => {
+          this.tableData.splice($index, 1);
+        });
+      },
+      onBundleDelete: function () {
+        return this.$confirm("确认要删除 " + this.selectedItems.length + " 项用户么？", '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          return this._onBundle('delete');
+        }).then(result => {
+          this.$message({
+            type: 'success',
+            message: "删除完毕"
+          });
+          return this.queryTableData();
+        });
+      },
+    }
   };
 
 </script>
