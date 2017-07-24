@@ -21,7 +21,7 @@
     <!-- Main content -->
     <section class="content">
 
-      <div class="box box-primary">
+      <div class="box box-default">
 
         <div class="box-header with-border">
           <el-button type="default" @click="onCancel" icon="close">返回</el-button>
