@@ -20,9 +20,8 @@
       <div class="box">
         <div class="box-header with-border">
           <div class="buttons">
-            <el-button type="primary" @click="onCreate"><i class="fa fa-plus"></i> 添加用户</el-button>
-            <el-button type="danger" @click="onBundleDelete" :disabled="selectedItems.length==0"><i
-                    class="fa fa-trash"></i>
+            <el-button type="primary" @click="onCreate" icon="plus">添加用户</el-button>
+            <el-button type="danger" @click="onBundleDelete" icon="delete" :disabled="selectedItems.length==0">
               删除用户
             </el-button>
           </div>
@@ -175,8 +174,8 @@
         <!-- /.box-body -->
 
         <div class="box-footer">
-          <el-button type="primary" @click="onCreate"><i class="fa fa-plus"></i> 添加用户</el-button>
-          <el-button type="danger" @click="onBundleDelete" :disabled="!selectedItems.length"><i class="fa fa-trash"></i>
+          <el-button type="primary" @click="onCreate" icon="plus">添加用户</el-button>
+          <el-button type="danger" @click="onBundleDelete" icon="delete" :disabled="selectedItems.length==0">
             删除用户
           </el-button>
         </div>
@@ -188,7 +187,7 @@
 </template>
 
 <script type="javascript">
-  import { mixin } from "resources/assets/js/commons/ListHelpers.js";
+  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
 
   export default {
     mixins: [mixin],
@@ -208,6 +207,12 @@
       return data;
     },
     methods: {
+      onCreate: function () {
+        return this.$router.push('/user/create');
+      },
+      onEditClick: function (row, column, $index, store) {
+        return this.$router.push('/user/' + row.id + '/edit');
+      },
       onDeleteClick: function (row, column, $index, store) {
         return this._onDeleteClick({
           url: '/user/' + row.id,
@@ -216,6 +221,7 @@
           messageText: '删除完毕'
         }).then(result => {
           this.tableData.splice($index, 1);
+          this.pagination.totalCount--;
         });
       },
       onBundleDelete: function () {
