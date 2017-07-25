@@ -20,6 +20,9 @@ class User extends Authenticatable
     const GENDER_MALE = 'male';
     const GENDER_FEMALE = 'female';
 
+    const ACTIVE = 1;
+    const INACTIVE = 0;
+
     public $fillable = [
         'name',
         'email',

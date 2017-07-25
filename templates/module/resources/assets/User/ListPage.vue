@@ -245,18 +245,4 @@
 </script>
 
 <style lang="scss">
-  .search {
-    margin-top: 1em;
-  }
-
-  .datatable-container {
-    .tools {
-      .el-pagination {
-        &, * {
-          font-size: 14px !important;
-        }
-        margin-top: 2px;
-      }
-    }
-  }
 </style>

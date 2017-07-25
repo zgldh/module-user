@@ -25,7 +25,7 @@
 
         <div class="box-header with-border">
           <el-button type="default" @click="onCancel" icon="close">返回</el-button>
-          <el-button type="primary" @click="onSave" icon="check" :disabled="saving">
+          <el-button type="primary" @click="onSave" icon="check" :loading="saving">
             保存
           </el-button>
         </div>
@@ -33,49 +33,44 @@
 
         <!-- form start -->
         <div class="box-body">
+          <el-alert class="missing-errors" v-if="missingErrors.length" v-for="errorMessage in missingErrors" :key="errorMessage"
+                    :title="errorMessage" type="error" show-icon></el-alert>
+
           <!-- form start -->
           <el-form ref="form" :model="form" label-width="80px">
-            <el-form-item label="活动名称">
+            <el-form-item label="ID" v-if="form.id">
+              <el-input v-model="form.id" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="Name" prop="name" :error="errors.name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="活动区域">
-              <el-select v-model="form.region" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
-              </el-select>
+            <el-form-item label="Email" prop="email" :error="errors.email">
+              <el-input v-model="form.email"></el-input>
             </el-form-item>
-            <el-form-item label="活动时间">
-              <el-col :span="11">
-                <el-date-picker type="date" placeholder="选择日期" v-model="form.date1"
-                                style="width: 100%;"></el-date-picker>
-              </el-col>
-              <el-col class="line" :span="2">-</el-col>
-              <el-col :span="11">
-                <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2"
-                                style="width: 100%;"></el-time-picker>
-              </el-col>
+            <el-form-item label="Password" prop="password" :error="errors.password">
+              <el-input v-model="form.password"></el-input>
+              <p class="assist-tip" v-if="form.id">不想修改密码则留空</p>
             </el-form-item>
-            <el-form-item label="即时配送">
-              <el-switch on-text="" off-text="" v-model="form.delivery"></el-switch>
-            </el-form-item>
-            <el-form-item label="活动性质">
-              <el-checkbox-group v-model="form.type">
-                <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-                <el-checkbox label="地推活动" name="type"></el-checkbox>
-                <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-                <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="特殊资源">
-              <el-radio-group v-model="form.resource">
-                <el-radio label="线上品牌商赞助"></el-radio>
-                <el-radio label="线下场地免费"></el-radio>
+            <el-form-item label="Gender" prop="gender" :error="errors.gender">
+              <el-radio-group v-model="form.gender">
+                <el-radio label="male">男 Male</el-radio>
+                <el-radio label="femal">女 Female</el-radio>
               </el-radio-group>
             </el-form-item>
-            <el-form-item label="活动形式">
-              <el-input type="textarea" v-model="form.desc"></el-input>
+            <el-form-item label="Mobile" prop="mobile" :error="errors.mobile">
+              <el-input v-model="form.mobile"></el-input>
             </el-form-item>
-            <el-form-item>
+            <el-form-item label="Is Active" prop="is_active" :error="errors.is_active">
+              <el-radio-group v-model="form.is_active">
+                <el-radio :label="1">Active</el-radio>
+                <el-radio :label="0">Inactive</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item label="Last Login At" v-if="form.id">
+              <el-input v-model="form.last_login_at" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="Login Times" v-if="form.id">
+              <el-input v-model="form.login_times" disabled></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -83,7 +78,7 @@
 
         <div class="box-footer">
           <el-button type="default" @click="onCancel" icon="close">返回</el-button>
-          <el-button type="primary" @click="onSave" icon="check" :disabled="saving">
+          <el-button type="primary" @click="onSave" icon="check" :loading="saving">
             保存
           </el-button>
         </div>
@@ -99,24 +94,32 @@
   import {mixin} from "resources/assets/js/commons/EditorHelper.js";
 
   // var resource = Vue.resource('/user{/id}?_with=avatar');
+
   export default  {
     mixins: [mixin],
     data: function () {
       return {
         form: {
+          id: null,
           name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        saving: false
+          email: '',
+          password: '',
+          gender: 'male',
+          mobile: '',
+          is_active: 1,
+          last_login_at: '',
+          login_times: 0,
+          avatar: null,
+        }
       };
     },
     components: {},
+    computed: {
+      resource: function () {
+        var resourceURL = '/user';
+        return this.form.id ? resourceURL + '/' + this.form.id : resourceURL;
+      }
+    },
     beforeRouteEnter (to, from, next) {
       if (to.params.id) {
         return resource.get({id: to.params.id}).then(function (result) {
@@ -134,8 +137,6 @@
       }
     },
     methods: {
-      onSave: function (event) {
-      },
       onCancel: function (event) {
         return this.$router.push('/user');
       },
