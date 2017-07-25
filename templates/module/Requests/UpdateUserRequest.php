@@ -23,7 +23,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
-        $user = User::find($this->route()->getParameter('user'));
+        $user = User::find($this->route()->parameters['user']);
         $user_id = $user->id;
 
         $rules = User::$rules;

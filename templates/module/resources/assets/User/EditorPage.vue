@@ -25,7 +25,7 @@
 
         <div class="box-header with-border">
           <el-button type="default" @click="onCancel" icon="close">返回</el-button>
-          <el-button type="primary" @click="onSave" icon="check" :loading="saving">
+          <el-button type="primary" @click="onSave" icon="check" :loading="saving||loading">
             保存
           </el-button>
         </div>
@@ -33,11 +33,12 @@
 
         <!-- form start -->
         <div class="box-body">
-          <el-alert class="missing-errors" v-if="missingErrors.length" v-for="errorMessage in missingErrors" :key="errorMessage"
+          <el-alert class="missing-errors" v-if="missingErrors.length" v-for="errorMessage in missingErrors"
+                    :key="errorMessage"
                     :title="errorMessage" type="error" show-icon></el-alert>
 
           <!-- form start -->
-          <el-form ref="form" :model="form" label-width="80px">
+          <el-form ref="form" :model="form" label-width="80px" v-loading="loading">
             <el-form-item label="ID" v-if="form.id">
               <el-input v-model="form.id" disabled></el-input>
             </el-form-item>
@@ -48,7 +49,7 @@
               <el-input v-model="form.email"></el-input>
             </el-form-item>
             <el-form-item label="Password" prop="password" :error="errors.password">
-              <el-input v-model="form.password"></el-input>
+              <el-input v-model="form.password" type="password"></el-input>
               <p class="assist-tip" v-if="form.id">不想修改密码则留空</p>
             </el-form-item>
             <el-form-item label="Gender" prop="gender" :error="errors.gender">
@@ -78,7 +79,7 @@
 
         <div class="box-footer">
           <el-button type="default" @click="onCancel" icon="close">返回</el-button>
-          <el-button type="primary" @click="onSave" icon="check" :loading="saving">
+          <el-button type="primary" @click="onSave" icon="check" :loading="saving||loading">
             保存
           </el-button>
         </div>
@@ -120,20 +121,19 @@
         return this.form.id ? resourceURL + '/' + this.form.id : resourceURL;
       }
     },
-    beforeRouteEnter (to, from, next) {
-      if (to.params.id) {
-        return resource.get({id: to.params.id}).then(function (result) {
-          next(function (vm) {
-            if (result.data.data) {
-              vm.form = result.data.data;
-            }
-          });
-        }).catch(function (err) {
-          next(false);
-        });
-      }
-      else {
-        next();
+    created: function () {
+      if (this.$route.params.id) {
+        this.loading = true;
+        this.form.id = this.$route.params.id;
+        return axios.get(this.resource)
+                .then((result) => {
+                  if (result.data.data) {
+                    this.form = result.data.data;
+                  }
+                  this.loading = false;
+                }).catch(function (err) {
+                  this.loading = false;
+                });
       }
     },
     methods: {

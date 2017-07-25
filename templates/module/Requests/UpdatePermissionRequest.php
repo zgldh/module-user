@@ -23,7 +23,7 @@ class UpdatePermissionRequest extends FormRequest
      */
     public function rules()
     {
-        $permission = Permission::find($this->route()->getParameter('permission'));
+        $permission = Permission::find($this->route()->parameters['permission']);
         $permissionId = $permission->id;
 
         $rules = Permission::$rules;

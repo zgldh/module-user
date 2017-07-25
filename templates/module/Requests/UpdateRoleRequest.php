@@ -23,7 +23,7 @@ class UpdateRoleRequest extends FormRequest
      */
     public function rules()
     {
-        $role = Role::find($this->route()->getParameter('role'));
+        $role = Role::find($this->route()->parameters['role']);
         $roleId = $role->id;
 
         $rules = Role::$rules;
