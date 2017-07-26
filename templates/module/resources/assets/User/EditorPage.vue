@@ -131,7 +131,8 @@
                     this.form = result.data.data;
                   }
                   this.loading = false;
-                }).catch(function (err) {
+                })
+                .catch(function (err) {
                   this.loading = false;
                 });
       }
