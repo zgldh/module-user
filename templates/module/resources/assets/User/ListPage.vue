@@ -107,7 +107,7 @@
                     border
                     style="width: 100%"
                     max-height="500"
-                    :default-sort="{prop: 'date', order: 'descending'}"
+                    :default-sort="defaultSort"
                     @sort-change="onSortChange"
                     @selection-change="onSelectionChange"
                     ref="table"
