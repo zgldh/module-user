@@ -7,7 +7,7 @@ export default [
   {path: '/user/role/create', component: () => System.import('./Role/EditorPage.vue')},
   {path: '/user/role/:id/edit', component: () => System.import('./Role/EditorPage.vue')},
 
-  // {path: '/user/permission', component: () => System.import('./Permission/ListPage.vue')},
-  // {path: '/user/permission/create', component: () => System.import('./Permission/EditorPage.vue')},
-  // {path: '/user/permission/:id/edit', component: () => System.import('./Permission/EditorPage.vue')},
+  {path: '/user/permission', component: () => System.import('./Permission/ListPage.vue')},
+  {path: '/user/permission/create', component: () => System.import('./Permission/EditorPage.vue')},
+  {path: '/user/permission/:id/edit', component: () => System.import('./Permission/EditorPage.vue')},
 ];

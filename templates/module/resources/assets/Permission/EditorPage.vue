@@ -2,8 +2,8 @@
   <div>
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>管理员权限
-        <small v-if="item.id">编辑权限</small>
+      <h1>用户权限
+        <small v-if="form.id">编辑权限</small>
         <small v-else>新建权限</small>
       </h1>
       <ol class="breadcrumb">
@@ -11,9 +11,9 @@
           <router-link to="/"><i class="fa fa-dashboard"></i> 总览</router-link>
         </li>
         <li>
-          <router-link to="/user/permission">管理员权限</router-link>
+          <router-link to="/user/permission">用户权限</router-link>
         </li>
-        <li class="active" v-if="item.id">编辑权限</li>
+        <li class="active" v-if="form.id">编辑权限</li>
         <li class="active" v-else>新建权限</li>
       </ol>
     </section>
@@ -21,125 +21,103 @@
     <!-- Main content -->
     <section class="content">
 
-      <div class="box box-primary">
-        <!--<div class="box-header with-border">-->
-        <!--</div>-->
+      <div class="box box-default">
+
+        <div class="box-header with-border">
+          <el-button type="default" @click="onCancel" icon="close">返回</el-button>
+          <el-button type="primary" @click="onSave" icon="check" :loading="saving||loading">
+            保存
+          </el-button>
+        </div>
         <!-- /.box-header -->
+
         <!-- form start -->
         <div class="box-body">
+          <el-alert class="missing-errors" v-if="missingErrors.length" v-for="errorMessage in missingErrors"
+                    :key="errorMessage"
+                    :title="errorMessage" type="error" show-icon></el-alert>
 
-          <form class="form-horizontal" @submit="onSave">
-            <div class="form-group" :class="{'has-error': item.$errors.has('name')}">
-              <label for="name" class="col-sm-2 control-label">权限英文标识 <span class="error">*</span></label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="name" v-model="item.name">
-                <span class="help-block"
-                      v-if="item.$errors.has('name')">{{item.$errors.get('name')}}</span>
-              </div>
-            </div>
-            <div class="form-group" :class="{'has-error': item.$errors.has('label')}">
-              <label for="label" class="col-sm-2 control-label">权限名 <span class="error">*</span></label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control" id="label" v-model="item.label">
-                <span class="help-block"
-                      v-if="item.$errors.has('label')">{{item.$errors.get('label')}}</span>
-              </div>
-            </div>
-          </form>
+          <!-- form start -->
+          <el-form ref="form" :model="form" label-width="100px" v-loading="loading">
+            <el-form-item label="ID" v-if="form.id">
+              <el-input v-model="form.id" disabled></el-input>
+            </el-form-item>
+            <el-form-item label="Name" prop="name" :error="errors.name">
+              <el-input v-model="form.name"></el-input>
+            </el-form-item>
+            <el-form-item label="Label" prop="label" :error="errors.label">
+              <el-input v-model="form.label"></el-input>
+            </el-form-item>
+            <el-form-item label="Created At" v-if="form.id">
+              <el-input v-model="form.created_at" disabled></el-input>
+            </el-form-item>
+          </el-form>
         </div>
         <!-- /.box-body -->
 
         <div class="box-footer">
-          <router-link-back class="btn btn-lg btn-flat btn-default pull-left">返回</router-link-back>
-          <button type="submit" form="editing-form" class="btn btn-lg btn-flat btn-primary" @click="onSave"
-                  :disabled="saving">
-            {{saving?"保存中...":"保存"}}
-          </button>
+          <el-button type="default" @click="onCancel" icon="close">返回</el-button>
+          <el-button type="primary" @click="onSave" icon="check" :loading="saving||loading">
+            保存
+          </el-button>
         </div>
       </div>
-
     </section>
     <!-- /.content -->
   </div>
 </template>
 
 <script type="javascript">
-  import { Vue } from 'resources/assets/js/commons/vuejs.js';
-  import { alert } from 'resources/assets/js/components/SweetAlertDialogs';
-  import ErrorsBuilder from 'resources/assets/js/commons/ErrorsBuilder.js';
+  import {mixin} from "resources/assets/js/commons/EditorHelper.js";
 
-  var resourceURL = "/admin/permission";
-  var resource = Vue.resource(resourceURL + '{/id}');
-  var vueConfig = {
+  // var resource = Vue.resource('/user{/id}?_with=avatar');
+
+  export default  {
+    mixins: [mixin],
     data: function () {
       return {
-        item: {
+        form: {
           id: null,
           name: '',
           label: '',
-          $errors: ErrorsBuilder()
         },
-        saving: false,
       };
     },
-    beforeRouteEnter (to, from, next) {
-      if (to.params.id) {
-        resource.get({id: to.params.id}).then(function (result) {
-          next(function (vm) {
-            vm.item = result.data.data;
-            vm.item.$errors = ErrorsBuilder();
-          })
-        }).catch(function (err) {
-          next(false);
-        });
+    components: {},
+    computed: {
+      resource: function () {
+        var resourceURL = '/user/permission';
+        return (this.form.id ? resourceURL + '/' + this.form.id : resourceURL);
       }
-      else {
-        next();
+    },
+    created: function () {
+      this.loading = true;
+      let loads = [];
+      if (this.$route.params.id) {
+        this.form.id = this.$route.params.id;
+        loads.push(axios.get(this.resource));
       }
+
+      Promise.all(loads).then(results => {
+        this.form = results[0].data.data;
+        this.loading = false;
+      }).catch(err => {
+        this.loading = false;
+      });
     },
     methods: {
       onSave: function (event) {
-        this.saving = true;
-        this.item.$errors.removeAll();
-
-        var promise = null;
-        let payload = $.extend(true, {}, this.item);
-        if (payload.id) {
-          promise = resource.update({id: payload.id}, payload).then(function (result) {
-            window.toastr["success"]("编辑已保存");
-            return result.data.data;
-          });
-        }
-        else {
-          promise = resource.save(payload).then(function (result) {
-            window.toastr["success"]("新增成功");
-            return result.data.data;
-          });
-        }
-
-        promise.then(function (data) {
-          return resource.get({id: data.id});
-        }).then(function (result) {
-          this.saving = false;
-          this.item = result.data.data;
-          this.item.$errors = ErrorsBuilder();
-        }.bind(this)).catch(function (err) {
-          this.saving = false;
-          if (err.status == 422) {
-            this.item.$errors.setAll(err.body);
-            this.item.$errors.focusFirstErrorField();
-          }
-          else {
-            alert(err.data.message);
-          }
-        }.bind(this));
-
-        return false;
+        this._onSave(event).then(result => {
+          this.$router.replace('/user/permission/' + result.data.data.id + '/edit');
+          this.form = result.data.data;
+          this.form.permissions = this.form.permissions.map(permission => permission.id);
+        });
+      },
+      onCancel: function (event) {
+        this.$router.back();
       },
     }
   };
-  export default vueConfig;
-
 </script>
 
 <style lang="scss">

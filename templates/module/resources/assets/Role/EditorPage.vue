@@ -58,6 +58,9 @@
                 </el-option>
               </el-select>
             </el-form-item>
+            <el-form-item label="Created At" v-if="form.id">
+              <el-input v-model="form.created_at" disabled></el-input>
+            </el-form-item>
           </el-form>
         </div>
         <!-- /.box-body -->
@@ -99,30 +102,34 @@
       }
     },
     created: function () {
+      this.loading = true;
+      let loads = [axios.get('/user/permission')];
       if (this.$route.params.id) {
-        this.loading = true;
         this.form.id = this.$route.params.id;
-        axios.get(this.resource)
-                .then((result) => {
-                  if (result.data.data) {
-                    this.form = result.data.data;
-                  }
-                  this.loading = false;
-                })
-                .catch(err => {
-                  this.loading = false;
-                });
+        loads.push(axios.get(this.resource));
       }
 
-      axios.get('/user/permission').then((result) => {
-        if (result.data.data) {
-          this.permissions = result.data.data;
+      Promise.all(loads).then(results => {
+        this.permissions = results[0].data.data;
+        if (results.length > 1) {
+          this.form = results[1].data.data;
+          this.form.permissions = this.form.permissions.map(permission => permission.id);
         }
+        this.loading = false;
+      }).catch(err => {
+        this.loading = false;
       });
     },
     methods: {
+      onSave: function (event) {
+        this._onSave(event).then(result => {
+          this.$router.replace('/user/role/' + result.data.data.id + '/edit');
+          this.form = result.data.data;
+          this.form.permissions = this.form.permissions.map(permission => permission.id);
+        });
+      },
       onCancel: function (event) {
-        return this.$router.push('/user/role');
+        this.$router.back();
       },
     }
   };

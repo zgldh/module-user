@@ -38,7 +38,7 @@
                     :title="errorMessage" type="error" show-icon></el-alert>
 
           <!-- form start -->
-          <el-form ref="form" :model="form" label-width="80px" v-loading="loading">
+          <el-form ref="form" :model="form" label-width="200px" v-loading="loading">
             <el-form-item label="ID" v-if="form.id">
               <el-input v-model="form.id" disabled></el-input>
             </el-form-item>
@@ -55,7 +55,7 @@
             <el-form-item label="Gender" prop="gender" :error="errors.gender">
               <el-radio-group v-model="form.gender">
                 <el-radio label="male">男 Male</el-radio>
-                <el-radio label="femal">女 Female</el-radio>
+                <el-radio label="female">女 Female</el-radio>
               </el-radio-group>
             </el-form-item>
             <el-form-item label="Mobile" prop="mobile" :error="errors.mobile">
@@ -66,6 +66,28 @@
                 <el-radio :label="1">Active</el-radio>
                 <el-radio :label="0">Inactive</el-radio>
               </el-radio-group>
+            </el-form-item>
+
+            <el-form-item label="Roles" prop="roles" :error="errors.roles">
+              <el-select class="role-selector" v-model="form.roles" filterable multiple placeholder="请选择">
+                <el-option
+                        v-for="role in roles"
+                        :key="role.id"
+                        :label="role.label"
+                        :value="role.id">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="Permissions" prop="permissions" :error="errors.permissions">
+              <el-select class="permission-selector" v-model="form.permissions" filterable multiple placeholder="请选择">
+                <el-option
+                        v-for="permission in permissions"
+                        :key="permission.id"
+                        :label="permission.label"
+                        :value="permission.id">
+                </el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="Last Login At" v-if="form.id">
               <el-input v-model="form.last_login_at" disabled></el-input>
@@ -111,40 +133,61 @@
           last_login_at: '',
           login_times: 0,
           avatar: null,
-        }
+          roles: [],
+          permissions: []
+        },
+        roles: [],
+        permissions: []
       };
     },
     components: {},
     computed: {
       resource: function () {
         var resourceURL = '/user';
-        return this.form.id ? resourceURL + '/' + this.form.id : resourceURL;
+        return (this.form.id ? resourceURL + '/' + this.form.id : resourceURL) + '?_with=roles,permissions';
       }
     },
     created: function () {
+      this.loading = true;
+      let loads = [
+        axios.get('/user/role'),
+        axios.get('/user/permission')
+      ];
       if (this.$route.params.id) {
-        this.loading = true;
         this.form.id = this.$route.params.id;
-        return axios.get(this.resource)
-                .then((result) => {
-                  if (result.data.data) {
-                    this.form = result.data.data;
-                  }
-                  this.loading = false;
-                })
-                .catch(function (err) {
-                  this.loading = false;
-                });
+        loads.push(axios.get(this.resource));
       }
+
+      Promise.all(loads).then(results => {
+        this.roles = results[0].data.data;
+        this.permissions = results[1].data.data;
+        if (results.length > 2) {
+          this.form = results[2].data.data;
+          this.form.roles = this.form.roles.map(role => role.id);
+          this.form.permissions = this.form.permissions.map(permission => permission.id);
+        }
+        this.loading = false;
+      }).catch(err => {
+        this.loading = false;
+      });
     },
     methods: {
+      onSave: function (event) {
+        this._onSave(event).then(result => {
+          this.$router.replace('/user/' + result.data.data.id + '/edit');
+          this.form = result.data.data;
+          this.form.permissions = this.form.permissions.map(permission => permission.id);
+        });
+      },
       onCancel: function (event) {
-        return this.$router.push('/user');
+        this.$router.back();
       },
     }
   };
 </script>
 
-<style lang="scss">
-
+<style lang="scss" scoped>
+  .role-selector, .permission-selector {
+    width: 100%;
+  }
 </style>
