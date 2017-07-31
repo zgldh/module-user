@@ -1,5 +1,7 @@
 <?php namespace zgldh\ModuleUser;
 
+use Faker\Factory;
+use Faker\Generator;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\PermissionServiceProvider;
@@ -28,7 +30,11 @@ class ModuleInstaller extends BaseInstaller
         $this->addRoute('User');
         $this->addToVueRoute('User');
         $this->updateAuthConfig();
-        Utils::addAdminMenuItem($this->getModuleTemplateContent('menu.blade.php'));
+        $this->addAdminMenuItem($this->getModuleTemplateContent('menu.blade.php'));
+        $this->publicFactoryAndSeed(
+            $this->getModuleTemplatePath('ModuleUserFactory.php'),
+            $this->getModuleTemplatePath('ModuleUserSeed.php')
+        );
 
         // Install laravel-permission
         App::register(PermissionServiceProvider::class);
@@ -40,7 +46,7 @@ class ModuleInstaller extends BaseInstaller
             '--tag'      => 'config']);
 
         // Publish migrations
-        $this->publishMigration('UpdatePermissionsTables', __DIR__ . '/../migrations/add_columns_to_users_table.php');
+        $this->publishMigration('AddColumnsToUsersTable', __DIR__ . '/../migrations/add_columns_to_users_table.php');
 
         Artisan::call('migrate');
 
