@@ -1,16 +1,19 @@
 <?php namespace $NAME$\User\Models;
 
+use $NAME$\Upload\Models\Upload;
 use $NAME$\User\Repositories\RoleRepository;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use zgldh\ModuleUpload\Traits\HasUploads;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use HasRoles;
     use HasApiTokens;
+    use HasUploads;
 
     public $table = 'users';
 
@@ -76,6 +79,11 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_has_roles');
+    }
+
+    public function avatar()
+    {
+        return $this->belongsTo(Upload::class, 'avatar_id', 'id');
     }
 
     public function isAdmin()

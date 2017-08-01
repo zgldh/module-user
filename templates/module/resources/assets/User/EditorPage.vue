@@ -58,6 +58,12 @@
                 <el-radio label="female">女 Female</el-radio>
               </el-radio-group>
             </el-form-item>
+
+            <el-form-item label="Avatar" prop="avatar" :error="errors.avatar">
+              <single-image-upload-component v-model="form.avatar_id"
+                                             :data="{type:'avatar'}"></single-image-upload-component>
+            </el-form-item>
+
             <el-form-item label="Mobile" prop="mobile" :error="errors.mobile">
               <el-input v-model="form.mobile"></el-input>
             </el-form-item>
@@ -115,6 +121,7 @@
 
 <script type="javascript">
   import {mixin} from "resources/assets/js/commons/EditorHelper.js";
+  import SingleImageUploadComponent from 'Modules/Upload/resources/assets/SingleImageUploadComponent.vue';
 
   // var resource = Vue.resource('/user{/id}?_with=avatar');
 
@@ -132,7 +139,7 @@
           is_active: 1,
           last_login_at: '',
           login_times: 0,
-          avatar: null,
+          avatar_id: null,  //如果这个参数是该数据表内有的字段，则写字段名，否则写关系名
           roles: [],
           permissions: []
         },
@@ -140,7 +147,9 @@
         permissions: []
       };
     },
-    components: {},
+    components: {
+      SingleImageUploadComponent
+    },
     computed: {
       resource: function () {
         var resourceURL = '/user';
