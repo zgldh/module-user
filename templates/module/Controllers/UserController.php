@@ -41,6 +41,7 @@ class UserController extends AppBaseController
         $input = $request->all();
 
         $user = $this->repository->create($input);
+        $user->load($request->getWith());
 
         return $this->sendResponse($user, 'User saved successfully.');
     }
@@ -54,8 +55,8 @@ class UserController extends AppBaseController
      */
     public function show($id, ShowRequest $request)
     {
-        $this->repository->with($request->getWith());
         $user = $this->repository->findWithoutFail($id);
+        $user->load($request->getWith());
 
         if (empty($user)) {
             return $this->sendError('User not found');
@@ -81,6 +82,7 @@ class UserController extends AppBaseController
         }
 
         $user = $this->repository->update($request->all(), $id);
+        $user->load($request->getWith());
 
         return $this->sendResponse($user, 'User updated successfully.');
     }

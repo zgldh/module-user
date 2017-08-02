@@ -185,6 +185,7 @@
         this._onSave(event).then(result => {
           this.$router.replace('/user/' + result.data.data.id + '/edit');
           this.form = result.data.data;
+          this.form.roles = this.form.roles.map(role => role.id);
           this.form.permissions = this.form.permissions.map(permission => permission.id);
         });
       },

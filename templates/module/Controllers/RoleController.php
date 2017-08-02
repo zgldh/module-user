@@ -41,6 +41,7 @@ class RoleController extends AppBaseController
         $input = $request->all();
 
         $role = $this->repository->create($input);
+        $role->load($request->getWith());
 
         return $this->sendResponse($role, 'Role saved successfully.');
     }
@@ -54,8 +55,8 @@ class RoleController extends AppBaseController
      */
     public function show($id, ShowRequest $request)
     {
-        $this->repository->with($request->getWith());
         $role = $this->repository->findWithoutFail($id);
+        $role->load($request->getWith());
 
         if (empty($role)) {
             return $this->sendError('Role not found');
@@ -81,6 +82,7 @@ class RoleController extends AppBaseController
         }
 
         $role = $this->repository->update($request->all(), $id);
+        $role->load($request->getWith());
 
         return $this->sendResponse($role, 'Role updated successfully.');
     }

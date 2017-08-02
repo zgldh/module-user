@@ -1,10 +1,12 @@
 <?php namespace $NAME$\User\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use $NAME$\User\Models\Permission;
+use Illuminate\Foundation\Http\FormRequest;
+use zgldh\Scaffold\Traits\HasWithParameter;
 
 class UpdatePermissionRequest extends FormRequest
 {
+    use HasWithParameter;
 
     /**
      * Determine if the permission is authorized to make this request.

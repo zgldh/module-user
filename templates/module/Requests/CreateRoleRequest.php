@@ -1,10 +1,12 @@
 <?php namespace $NAME$\User\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use $NAME$\User\Models\Role;
+use Illuminate\Foundation\Http\FormRequest;
+use zgldh\Scaffold\Traits\HasWithParameter;
 
 class CreateRoleRequest extends FormRequest
 {
+    use HasWithParameter;
 
     /**
      * Determine if the role is authorized to make this request.

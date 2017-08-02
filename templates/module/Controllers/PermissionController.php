@@ -41,6 +41,7 @@ class PermissionController extends AppBaseController
         $input = $request->all();
 
         $permission = $this->repository->create($input);
+        $permission->load($request->getWith());
 
         return $this->sendResponse($permission, 'Permission saved successfully.');
     }
@@ -54,8 +55,8 @@ class PermissionController extends AppBaseController
      */
     public function show($id, ShowRequest $request)
     {
-        $this->repository->with($request->getWith());
         $permission = $this->repository->findWithoutFail($id);
+        $permission->load($request->getWith());
 
         if (empty($permission)) {
             return $this->sendError('Permission not found');
@@ -81,6 +82,7 @@ class PermissionController extends AppBaseController
         }
 
         $permission = $this->repository->update($request->all(), $id);
+        $permission->load($request->getWith());
 
         return $this->sendResponse($permission, 'Permission updated successfully.');
     }
