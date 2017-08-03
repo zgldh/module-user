@@ -2,6 +2,7 @@
 
 use $NAME$\Upload\Models\Upload;
 use $NAME$\User\Repositories\RoleRepository;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -14,6 +15,7 @@ class User extends Authenticatable
     use HasRoles;
     use HasApiTokens;
     use HasUploads;
+    use SoftDeletes;
 
     public $table = 'users';
 
@@ -54,6 +56,8 @@ class User extends Authenticatable
         'last_login_at' => 'datetime',
         'login_times'   => 'integer',
     ];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * Validation rules
