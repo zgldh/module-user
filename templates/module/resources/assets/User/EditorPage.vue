@@ -137,7 +137,7 @@
           gender: 'male',
           mobile: '',
           is_active: 1,
-          last_login_at: '',
+          last_login_at: null,
           login_times: 0,
           avatar_id: null,  //如果这个参数是该数据表内有的字段，则写字段名，否则写关系名
           roles: [],
