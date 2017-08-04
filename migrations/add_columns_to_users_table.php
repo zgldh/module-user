@@ -19,7 +19,7 @@ class AddColumnsToUsersTable extends Migration
             $table->timestamp('last_login_at')->nullable();
             $table->integer('login_times')->default(0);
             $table->integer('avatar_id')->nullable();
-            $table->timestamp('deleted_at')->nullable();
+            $table->softDeletes();
         });
         Schema::table('roles', function (Blueprint $table) {
             $table->string('label');
