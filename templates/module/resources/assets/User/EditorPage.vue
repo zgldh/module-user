@@ -11,7 +11,7 @@
           <router-link to="/"><i class="fa fa-dashboard"></i> 总览</router-link>
         </li>
         <li>
-          <router-link to="/user">用户管理</router-link>
+          <router-link to="/user/list">用户管理</router-link>
         </li>
         <li class="active" v-if="form.id">查看用户</li>
         <li class="active" v-else>新建用户</li>

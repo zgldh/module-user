@@ -1,5 +1,5 @@
 export default [
-  {path: '/user', component: () => System.import('./User/ListPage.vue')},
+  {path: '/user/list', component: () => System.import('./User/ListPage.vue')},
   {path: '/user/create', component: () => System.import('./User/EditorPage.vue')},
   {path: '/user/:id/edit', component: () => System.import('./User/EditorPage.vue')},
 
