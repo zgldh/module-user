@@ -36,7 +36,8 @@ class User extends Authenticatable
         'mobile',
         'is_active',
         'last_login_at',
-        'login_times'
+        'login_times',
+        'avatar_id'
     ];
 
     protected $hidden = [
@@ -55,6 +56,7 @@ class User extends Authenticatable
         'is_active'     => 'integer',
         'last_login_at' => 'datetime',
         'login_times'   => 'integer',
+        'avatar_id'   => 'integer',
     ];
 
     protected $dates = ['deleted_at'];
