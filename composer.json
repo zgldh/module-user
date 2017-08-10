@@ -9,8 +9,8 @@
   ],
   "license": "MIT",
   "require": {
-    "zgldh/scaffold": "^0.3.9",
-    "zgldh/module-upload": "^0.3.5",
+    "zgldh/scaffold": "^0.3.10",
+    "zgldh/module-upload": "^0.3.7",
     "spatie/laravel-permission": "~1.5"
   },
   "require-dev": {
