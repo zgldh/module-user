@@ -2,6 +2,8 @@
 
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Login;
+use $NAME$\ActionLog\Models\ActionLog;
+use $NAME$\ActionLog\Repositories\ActionLogRepository;
 
 class UserServiceProvider extends \zgldh\ModuleUser\UserServiceProvider
 {
@@ -33,6 +35,13 @@ class UserServiceProvider extends \zgldh\ModuleUser\UserServiceProvider
             $user->last_login_at = Carbon::now();
             $user->login_times++;
             $user->save();
+
+            ActionLogRepository::log(ActionLog::TYPE_LOGIN, 'Modules\User', $user);
+        });
+
+        \Event::listen(Logout::class, function (Logout $event) {
+            $user = $event->user;
+            ActionLogRepository::log(ActionLog::TYPE_LOGOUT, 'Modules\User', $user);
         });
     }
 }

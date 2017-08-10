@@ -11,6 +11,7 @@
   "require": {
     "zgldh/scaffold": "^0.3.10",
     "zgldh/module-upload": "^0.3.7",
+    "zgldh/module-action-log": "^0.1.4",
     "spatie/laravel-permission": "~1.5"
   },
   "require-dev": {
