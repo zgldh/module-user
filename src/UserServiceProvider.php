@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
+use zgldh\ModuleUser\Commands\SetupAdminUser;
 
 /**
  * Created by PhpStorm.
@@ -20,6 +21,15 @@ class UserServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(PermissionServiceProvider::class);
+
+
+        $this->app->singleton('zgldh.user.admin', function ($app) {
+            return new SetupAdminUser();
+        });
+
+        $this->commands([
+            'zgldh.user.admin'
+        ]);
     }
 
     /**
