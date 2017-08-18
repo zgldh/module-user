@@ -27,6 +27,7 @@ class UserServiceProvider extends \zgldh\ModuleUser\UserServiceProvider
     public function boot()
     {
         //
+        parent::boot();
         $this->loadViewsFrom(__DIR__ . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . 'views',
             '$NAME$\User');
 

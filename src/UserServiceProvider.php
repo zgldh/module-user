@@ -39,5 +39,6 @@ class UserServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadTranslationsFrom(resource_path('lang/vendor/module-user'), 'module-user');
     }
 }
