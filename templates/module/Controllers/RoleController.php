@@ -1,7 +1,5 @@
 <?php namespace $NAME$\User\Controllers;
 
-use $NAME$\ActionLog\Models\ActionLog;
-use $NAME$\ActionLog\Repositories\ActionLogRepository;
 use $NAME$\User\Repositories\RoleRepository;
 use $NAME$\User\Requests\CreateRoleRequest;
 use $NAME$\User\Requests\UpdateRoleRequest;
@@ -30,8 +28,6 @@ class RoleController extends AppBaseController
         $with = $request->getWith();
         $data = $this->repository->datatables(null, $with);
 
-        ActionLogRepository::log(ActionLog::TYPE_SEARCH, 'role');
-
         return $data;
     }
 
@@ -47,8 +43,6 @@ class RoleController extends AppBaseController
 
         $role = $this->repository->create($input);
         $role->load($request->getWith());
-
-        ActionLogRepository::log(ActionLog::TYPE_CREATE, 'role');
 
         return $this->sendResponse($role, 'Role saved successfully.');
     }
@@ -68,8 +62,6 @@ class RoleController extends AppBaseController
         if (empty($role)) {
             return $this->sendError('Role not found');
         }
-
-        ActionLogRepository::log(ActionLog::TYPE_SHOW, 'role');
 
         return $this->sendResponse($role, '');
     }
@@ -93,8 +85,6 @@ class RoleController extends AppBaseController
         $role = $this->repository->update($request->all(), $id);
         $role->load($request->getWith());
 
-        ActionLogRepository::log(ActionLog::TYPE_UPDATE, 'role');
-
         return $this->sendResponse($role, 'Role updated successfully.');
     }
 
@@ -114,8 +104,6 @@ class RoleController extends AppBaseController
         }
 
         $this->repository->delete($id);
-
-        ActionLogRepository::log(ActionLog::TYPE_DELETE, 'role');
 
         return $this->sendResponse($role, 'Role deleted successfully.');
     }

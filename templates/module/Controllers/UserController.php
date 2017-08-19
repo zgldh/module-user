@@ -1,7 +1,5 @@
 <?php namespace $NAME$\User\Controllers;
 
-use $NAME$\ActionLog\Models\ActionLog;
-use $NAME$\ActionLog\Repositories\ActionLogRepository;
 use $NAME$\User\Repositories\UserRepository;
 use $NAME$\User\Requests\CreateUserRequest;
 use $NAME$\User\Requests\UpdateUserRequest;
@@ -30,8 +28,6 @@ class UserController extends AppBaseController
         $with = $request->getWith();
         $data = $this->repository->datatables(null, $with);
 
-        ActionLogRepository::log(ActionLog::TYPE_SEARCH, 'user');
-
         return $data;
     }
 
@@ -47,8 +43,6 @@ class UserController extends AppBaseController
 
         $user = $this->repository->create($input);
         $user->load($request->getWith());
-
-        ActionLogRepository::log(ActionLog::TYPE_CREATE, 'user');
 
         return $this->sendResponse($user, 'User saved successfully.');
     }
@@ -68,8 +62,6 @@ class UserController extends AppBaseController
         if (empty($user)) {
             return $this->sendError('User not found');
         }
-
-        ActionLogRepository::log(ActionLog::TYPE_SHOW, 'user');
 
         return $this->sendResponse($user, '');
     }
@@ -93,8 +85,6 @@ class UserController extends AppBaseController
         $user = $this->repository->update($request->all(), $id);
         $user->load($request->getWith());
 
-        ActionLogRepository::log(ActionLog::TYPE_UPDATE, 'user');
-
         return $this->sendResponse($user, 'User updated successfully.');
     }
 
@@ -114,8 +104,6 @@ class UserController extends AppBaseController
         }
 
         $this->repository->delete($id);
-
-        ActionLogRepository::log(ActionLog::TYPE_DELETE, 'user');
 
         return $this->sendResponse($user, 'User deleted successfully.');
     }

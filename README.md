@@ -3,6 +3,7 @@ User Module for zgldh/scaffold
 
 ## 安装
 1. 执行 `composer require zgldh/module-user`
+2. 安装依赖包  `zgldh:module:install zgldh\ModuleActivityLog`
 2. 安装依赖包  `zgldh:module:install zgldh\ModuleUpload`
 3. 执行  `php artisan zgldh:module:install zgldh\ModuleUser`
     1. 自动将文件放入 Modules 目录下

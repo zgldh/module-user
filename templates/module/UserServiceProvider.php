@@ -37,12 +37,12 @@ class UserServiceProvider extends \zgldh\ModuleUser\UserServiceProvider
             $user->login_times++;
             $user->save();
 
-            ActionLogRepository::log(ActionLog::TYPE_LOGIN, 'user', $user);
+            activity()->log('login');
         });
 
         \Event::listen(Logout::class, function (Logout $event) {
             $user = $event->user;
-            ActionLogRepository::log(ActionLog::TYPE_LOGOUT, 'user', $user);
+            activity()->log('logout');
         });
     }
 }

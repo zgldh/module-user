@@ -1,7 +1,5 @@
 <?php namespace $NAME$\User\Controllers;
 
-use $NAME$\ActionLog\Models\ActionLog;
-use $NAME$\ActionLog\Repositories\ActionLogRepository;
 use $NAME$\User\Repositories\PermissionRepository;
 use $NAME$\User\Requests\CreatePermissionRequest;
 use $NAME$\User\Requests\UpdatePermissionRequest;
@@ -29,7 +27,6 @@ class PermissionController extends AppBaseController
     {
         $with = $request->getWith();
         $data = $this->repository->datatables(null, $with);
-        ActionLogRepository::log(ActionLog::TYPE_SEARCH, 'permission');
 
         return $data;
     }
@@ -46,7 +43,6 @@ class PermissionController extends AppBaseController
 
         $permission = $this->repository->create($input);
         $permission->load($request->getWith());
-        ActionLogRepository::log(ActionLog::TYPE_CREATE, 'permission');
 
         return $this->sendResponse($permission, 'Permission saved successfully.');
     }
@@ -66,7 +62,6 @@ class PermissionController extends AppBaseController
         if (empty($permission)) {
             return $this->sendError('Permission not found');
         }
-        ActionLogRepository::log(ActionLog::TYPE_SHOW, 'permission');
 
         return $this->sendResponse($permission, '');
     }
@@ -89,7 +84,6 @@ class PermissionController extends AppBaseController
 
         $permission = $this->repository->update($request->all(), $id);
         $permission->load($request->getWith());
-        ActionLogRepository::log(ActionLog::TYPE_UPDATE, 'permission');
 
         return $this->sendResponse($permission, 'Permission updated successfully.');
     }
@@ -110,7 +104,6 @@ class PermissionController extends AppBaseController
         }
 
         $this->repository->delete($id);
-        ActionLogRepository::log(ActionLog::TYPE_DELETE, 'permission');
 
         return $this->sendResponse($permission, 'Permission deleted successfully.');
     }

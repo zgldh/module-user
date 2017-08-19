@@ -31,6 +31,7 @@ class ModuleInstaller extends BaseInstaller
         $this->addToVueRoute('User');
         $this->updateAuthConfig();
         $this->addAdminMenuItem($this->getModuleTemplateContent('menu.blade.php'));
+        $this->copyLanguageFiles('module-user');
         $this->publicFactoryAndSeed(
             $this->getModuleTemplatePath('ModuleUserFactory.php'),
             $this->getModuleTemplatePath('ModuleUserSeed.php')
@@ -40,10 +41,12 @@ class ModuleInstaller extends BaseInstaller
         App::register(PermissionServiceProvider::class);
         Artisan::call('vendor:publish', [
             '--provider' => PermissionServiceProvider::class,
-            '--tag'      => 'migrations']);
+            '--tag'      => 'migrations'
+        ]);
         Artisan::call('vendor:publish', [
             '--provider' => PermissionServiceProvider::class,
-            '--tag'      => 'config']);
+            '--tag'      => 'config'
+        ]);
 
         // Publish migrations
         $this->publishMigration('AddColumnsToUsersTable', __DIR__ . '/../migrations/add_columns_to_users_table.php');

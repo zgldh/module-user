@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use zgldh\ModuleUpload\Traits\HasUploads;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
@@ -16,6 +17,7 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasUploads;
     use SoftDeletes;
+    use LogsActivity;
 
     public $table = 'users';
 
@@ -29,6 +31,18 @@ class User extends Authenticatable
     const INACTIVE = 0;
 
     public $fillable = [
+        'name',
+        'email',
+        'password',
+        'gender',
+        'mobile',
+        'is_active',
+        'last_login_at',
+        'login_times',
+        'avatar_id'
+    ];
+
+    protected static $logAttributes = [
         'name',
         'email',
         'password',
