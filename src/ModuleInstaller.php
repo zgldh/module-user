@@ -31,7 +31,7 @@ class ModuleInstaller extends BaseInstaller
         $this->addToVueRoute('User');
         $this->updateAuthConfig();
         $this->addAdminMenuItem($this->getModuleTemplateContent('menu.blade.php'));
-        $this->copyLanguageFiles('module-user');
+        $this->copyLanguageFiles('module_user');
         $this->publicFactoryAndSeed(
             $this->getModuleTemplatePath('ModuleUserFactory.php'),
             $this->getModuleTemplatePath('ModuleUserSeed.php')
