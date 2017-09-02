@@ -1,5 +1,16 @@
 <?php
 
 return [
-    'name' => "User Management"
+    'title'  => "User Management",
+    'models' => [
+        'user'       => [
+            'title' => 'Users'
+        ],
+        'role'       => [
+            'title' => 'Roles'
+        ],
+        'permission' => [
+            'title' => 'Permissions'
+        ],
+    ]
 ];
