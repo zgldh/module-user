@@ -2,13 +2,15 @@
   <div>
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>用户权限
-        <small>权限列表</small>
+      <h1>{{$t('module_user.models.permission.title')}}
+        <small>{{$t('scaffold.terms.list')}}</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="/"><i class="fa fa-dashboard"></i> 总览</a></li>
-        <li><a href="#">用户权限</a></li>
-        <li class="active">权限列表</li>
+        <li>
+          <router-link to="/"><i class="fa fa-dashboard"></i> {{$t('module_dashboard.title')}}</router-link>
+        </li>
+        <li>{{$t('module_user.models.permission.title')}}</li>
+        <li class="active">{{$t('scaffold.terms.list')}}</li>
       </ol>
     </section>
 
@@ -18,9 +20,9 @@
       <div class="box">
         <div class="box-header with-border">
           <div class="buttons">
-            <el-button type="primary" @click="onCreate" icon="plus">添加权限</el-button>
+            <el-button type="primary" @click="onCreate" icon="plus">{{$t('scaffold.terms.create')}}</el-button>
             <el-button type="danger" @click="onBundleDelete" icon="delete" :disabled="selectedItems.length==0">
-              删除权限
+              {{$t('scaffold.terms.batch_delete')}}
             </el-button>
           </div>
         </div>
@@ -37,8 +39,8 @@
               </el-form-item>
               <el-form-item>
                 <el-button-group>
-                  <el-button type="primary" @click="onSubmitSearch">查询</el-button>
-                  <el-button type="button" @click="onResetSearch">清空</el-button>
+                  <el-button type="primary" @click="onSubmitSearch">{{$t('scaffold.terms.search_submit')}}</el-button>
+                  <el-button type="button" @click="onResetSearch">{{$t('scaffold.terms.search_reset')}}</el-button>
                 </el-button-group>
               </el-form-item>
             </el-form>
@@ -48,7 +50,7 @@
             <!-- 采用 datatables 标准-->
             <el-row class="tools">
               <el-col :span="4">
-                <span class="page-size">显示
+                <span class="page-size">{{$t('scaffold.terms.page_size_show')}}
                 <el-select v-model="pagination.pageSize" style="width: 80px"
                            @change="onPageSizeChange">
                   <el-option
@@ -58,7 +60,7 @@
                           :value="item.value">
                   </el-option>
                 </el-select>
-                  项结果</span>
+                  {{$t('scaffold.terms.page_size_items')}}</span>
               </el-col>
               <el-col :span="12">
                 <el-pagination
@@ -71,7 +73,7 @@
               </el-col>
               <el-col :span="8">
                 <el-input class="auto-search" style="width: 200px;float: right;"
-                          placeholder="模糊搜索"
+                          :placeholder="$t('scaffold.terms.auto_search')"
                           v-model="datatablesParameters.search.value"
                           :icon="datatablesParameters.search.value?'close':'search'"
                           :on-icon-click="onAutoSearchIconClick"
@@ -118,14 +120,14 @@
               </el-table-column>
               <el-table-column
                       fixed="right"
-                      label="操作"
+                      :label="$t('scaffold.terms.actions')"
                       width="120">
                 <template scope="scope">
                   <el-button-group>
                     <el-button @click="onEditClick(scope.row,scope.column,scope.$index,scope.store)" type="default"
-                               size="small" icon="edit" title="编辑"></el-button>
+                               size="small" icon="edit" :title="$t('scaffold.terms.edit')"></el-button>
                     <el-button @click="onDeleteClick(scope.row,scope.column,scope.$index,scope.store)" type="danger"
-                               size="small" icon="delete" title="删除"></el-button>
+                               size="small" icon="delete" :title="$t('scaffold.terms.delete')"></el-button>
                   </el-button-group>
                 </template>
               </el-table-column>
@@ -135,9 +137,9 @@
         <!-- /.box-body -->
 
         <div class="box-footer">
-          <el-button type="primary" @click="onCreate" icon="plus">添加权限</el-button>
+          <el-button type="primary" @click="onCreate" icon="plus">{{$t('scaffold.terms.create')}}</el-button>
           <el-button type="danger" @click="onBundleDelete" icon="delete" :disabled="selectedItems.length==0">
-            删除权限
+            {{$t('scaffold.terms.batch_delete')}}
           </el-button>
         </div>
       </div>
@@ -147,10 +149,14 @@
 </template>
 
 <script type="javascript">
-  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
+  import { mixin } from "resources/assets/js/commons/ListHelpers.js";
+  import { loadModuleLanguage } from 'resources/assets/js/commons/LanguageHelper';
 
   export default {
-    mixins: [mixin],
+    mixins: [
+      mixin,
+      loadModuleLanguage('module_user')
+    ],
     data: function () {
       let data = {
         resource: '/user/permission',
@@ -175,24 +181,25 @@
         return this._onDeleteClick({
           url: '/user/permission/' + row.id,
           params: {},
-          confirmText: '确认要删除吗？',
-          messageText: '删除完毕'
+          confirmText: this.$i18n.t('scaffold.delete_confirm.confirm_text'),
+          messageText: this.$i18n.t('scaffold.delete_confirm.complete_text'),
         }).then(result => {
           this.tableData.splice($index, 1);
           this.pagination.totalCount--;
         });
       },
       onBundleDelete: function () {
-        return this.$confirm("确认要删除 " + this.selectedItems.length + " 项权限么？", '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
+        return this.$confirm(this.$i18n.t('scaffold.delete_confirm.bundle_confirm_text', {count: this.selectedItems.length}),
+                this.$i18n.t('scaffold.terms.alert'), {
+                  confirmButtonText: this.$i18n.t('scaffold.terms.confirm'),
+                  cancelButtonText: this.$i18n.t('scaffold.terms.cancel'),
+                  type: 'warning'
         }).then(() => {
           return this._onBundle('delete');
         }).then(result => {
           this.$message({
             type: 'success',
-            message: "删除完毕"
+            message: this.$i18n.t('scaffold.delete_confirm.complete_text')
           });
           return this.queryTableData();
         });

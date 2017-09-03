@@ -2,19 +2,19 @@
   <div>
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>用户角色
-        <small v-if="form.id">编辑角色</small>
-        <small v-else>新建角色</small>
+      <h1>{{$t('module_user.models.role.title')}}
+        <small v-if="form.id">{{$t('scaffold.terms.edit')}}</small>
+        <small v-else>{{$t('scaffold.terms.create')}}</small>
       </h1>
       <ol class="breadcrumb">
         <li>
-          <router-link to="/"><i class="fa fa-dashboard"></i> 总览</router-link>
+          <router-link to="/"><i class="fa fa-dashboard"></i> {{$t('module_dashboard.title')}}</router-link>
         </li>
         <li>
-          <router-link to="/user/role">用户角色</router-link>
+          <router-link to="/user/role">{{$t('module_user.models.role.title')}}</router-link>
         </li>
-        <li class="active" v-if="form.id">编辑角色</li>
-        <li class="active" v-else>新建角色</li>
+        <li class="active" v-if="form.id">{{$t('scaffold.terms.edit')}}</li>
+        <li class="active" v-else>{{$t('scaffold.terms.create')}}</li>
       </ol>
     </section>
 
@@ -24,9 +24,9 @@
       <div class="box box-default">
 
         <div class="box-header with-border">
-          <el-button type="default" @click="onCancel" icon="close">返回</el-button>
+          <el-button type="default" @click="onCancel" icon="close">{{$t('scaffold.terms.back')}}</el-button>
           <el-button type="primary" @click="onSave" icon="check" :loading="saving||loading">
-            保存
+            {{$t('scaffold.terms.save')}}
           </el-button>
         </div>
         <!-- /.box-header -->
@@ -49,7 +49,7 @@
               <el-input v-model="form.label"></el-input>
             </el-form-item>
             <el-form-item label="Permissions" prop="permissions" :error="errors.permissions">
-              <el-select class="permission-selector" v-model="form.permissions" filterable multiple placeholder="请选择">
+              <el-select class="permission-selector" v-model="form.permissions" filterable multiple>
                 <el-option
                         v-for="permission in permissions"
                         :key="permission.id"
@@ -66,9 +66,9 @@
         <!-- /.box-body -->
 
         <div class="box-footer">
-          <el-button type="default" @click="onCancel" icon="close">返回</el-button>
+          <el-button type="default" @click="onCancel" icon="close">{{$t('scaffold.terms.back')}}</el-button>
           <el-button type="primary" @click="onSave" icon="check" :loading="saving||loading">
-            保存
+            {{$t('scaffold.terms.save')}}
           </el-button>
         </div>
       </div>
@@ -77,12 +77,14 @@
 </template>
 
 <script type="javascript">
-  import {mixin} from "resources/assets/js/commons/EditorHelper.js";
-
-  // var resource = Vue.resource('/user{/id}?_with=avatar');
+  import { mixin } from "resources/assets/js/commons/EditorHelper.js";
+  import { loadModuleLanguage } from 'resources/assets/js/commons/LanguageHelper';
 
   export default  {
-    mixins: [mixin],
+    mixins: [
+      mixin,
+      loadModuleLanguage('module_user')
+    ],
     data: function () {
       return {
         form: {
