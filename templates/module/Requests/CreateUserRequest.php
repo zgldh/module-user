@@ -30,4 +30,9 @@ class CreateUserRequest extends FormRequest
         $rules['email'] = 'required|email|unique:users';
         return $rules;
     }
+
+    public function attributes()
+    {
+        return __('module_user::t.models.user.fields');
+    }
 }

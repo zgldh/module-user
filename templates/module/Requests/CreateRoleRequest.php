@@ -30,4 +30,9 @@ class CreateRoleRequest extends FormRequest
         $rules['label'] = 'required|unique:roles';
         return $rules;
     }
+
+    public function attributes()
+    {
+        return __('module_user::t.models.role.fields');
+    }
 }

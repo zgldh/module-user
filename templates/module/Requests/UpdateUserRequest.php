@@ -34,4 +34,9 @@ class UpdateUserRequest extends FormRequest
         unset($rules['password']);
         return $rules;
     }
+
+    public function attributes()
+    {
+        return __('module_user::t.models.user.fields');
+    }
 }

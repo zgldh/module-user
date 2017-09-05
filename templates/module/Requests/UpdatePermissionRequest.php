@@ -33,4 +33,9 @@ class UpdatePermissionRequest extends FormRequest
         $rules['label'] = 'required|unique:permissions,label,' . $permissionId;
         return $rules;
     }
+
+    public function attributes()
+    {
+        return __('module_user::t.models.permission.fields');
+    }
 }

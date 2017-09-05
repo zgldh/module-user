@@ -33,4 +33,9 @@ class UpdateRoleRequest extends FormRequest
         $rules['label'] = 'required|unique:roles,label,' . $roleId;
         return $rules;
     }
+
+    public function attributes()
+    {
+        return __('module_user::t.models.role.fields');
+    }
 }

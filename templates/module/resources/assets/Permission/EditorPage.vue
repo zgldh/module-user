@@ -39,16 +39,16 @@
 
           <!-- form start -->
           <el-form ref="form" :model="form" label-width="100px" v-loading="loading">
-            <el-form-item label="ID" v-if="form.id">
+            <el-form-item :label="$t('scaffold.fields.id')" v-if="form.id">
               <el-input v-model="form.id" disabled></el-input>
             </el-form-item>
-            <el-form-item label="Name" prop="name" :error="errors.name">
+            <el-form-item :label="$t('module_user.models.permission.fields.name')" prop="name" :error="errors.name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="Label" prop="label" :error="errors.label">
+            <el-form-item :label="$t('module_user.models.permission.fields.label')" prop="label" :error="errors.label">
               <el-input v-model="form.label"></el-input>
             </el-form-item>
-            <el-form-item label="Created At" v-if="form.id">
+            <el-form-item :label="$t('scaffold.fields.created_at')" v-if="form.id">
               <el-input v-model="form.created_at" disabled></el-input>
             </el-form-item>
           </el-form>

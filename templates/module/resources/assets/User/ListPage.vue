@@ -31,20 +31,19 @@
         <div class="box-body datatable-loading-section">
           <div class="search">
             <el-form :inline="true" :model="searchForm" ref="searchForm">
-              <el-form-item label="Name">
-                <el-input v-model="searchForm.name" placeholder="Name" column="name" operator="like"></el-input>
+              <el-form-item :label="$t('module_user.models.user.fields.name')">
+                <el-input v-model="searchForm.name" column="name" operator="like"></el-input>
               </el-form-item>
-              <el-form-item label="Email">
-                <el-input v-model="searchForm.email" placeholder="Email" column="email" operator="like"></el-input>
+              <el-form-item :label="$t('module_user.models.user.fields.email')">
+                <el-input v-model="searchForm.email" column="email" operator="like"></el-input>
               </el-form-item>
-              <el-form-item label="Is Active">
-                <el-select v-model="searchForm.is_active" placeholder="Select..." clearable
-                           column="is_active" operator="=">
+              <el-form-item :label="$t('module_user.models.user.fields.is_active')">
+                <el-select v-model="searchForm.is_active" clearable column="is_active" operator="=">
                   <el-option label="Active" value="1"></el-option>
                   <el-option label="Inactive" value="0"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="Created At">
+              <el-form-item :label="$t('scaffold.fields.created_at')">
                 <el-date-picker
                         v-model="searchForm.created_at"
                         type="daterange"
@@ -109,8 +108,7 @@
                     :default-sort="defaultSort"
                     @sort-change="onSortChange"
                     @selection-change="onSelectionChange"
-                    ref="table"
-            >
+                    ref="table">
               <el-table-column
                       fixed
                       type="selection"
@@ -118,27 +116,27 @@
               </el-table-column>
               <el-table-column
                       prop="name"
-                      label="Name"
+                      :label="$t('module_user.models.user.fields.name')"
                       sortable="custom"
                       show-overflow-tooltip
                       width="180">
               </el-table-column>
               <el-table-column
                       prop="email"
-                      label="Email"
+                      :label="$t('module_user.models.user.fields.email')"
                       sortable="custom"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
                       prop="is_active"
-                      label="Is Active"
+                      :label="$t('module_user.models.user.fields.is_active')"
                       sortable="custom"
                       searchable="false"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
                       prop="last_login_at"
-                      label="Last Login"
+                      :label="$t('module_user.models.user.fields.last_login_at')"
                       sortable="custom"
                       searchable="false"
                       show-overflow-tooltip>
@@ -149,7 +147,7 @@
               </el-table-column>
               <el-table-column
                       prop="created_at"
-                      label="Created At"
+                      :label="$t('scaffold.fields.created_at')"
                       sortable="custom"
                       searchable="false"
                       show-overflow-tooltip>
@@ -186,8 +184,8 @@
 </template>
 
 <script type="javascript">
-  import { mixin } from "resources/assets/js/commons/ListHelpers.js";
-  import { loadModuleLanguage } from 'resources/assets/js/commons/LanguageHelper';
+  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
+  import {loadModuleLanguage} from 'resources/assets/js/commons/LanguageHelper';
 
   export default {
     mixins: [
@@ -233,7 +231,7 @@
                   confirmButtonText: this.$i18n.t('scaffold.terms.confirm'),
                   cancelButtonText: this.$i18n.t('scaffold.terms.cancel'),
                   type: 'warning'
-        }).then(() => {
+                }).then(() => {
           return this._onBundle('delete');
         }).then(result => {
           this.$message({

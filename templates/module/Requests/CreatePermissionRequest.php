@@ -30,4 +30,9 @@ class CreatePermissionRequest extends FormRequest
         $rules['label'] = 'required|unique:permissions';
         return $rules;
     }
+
+    public function attributes()
+    {
+        return __('module_user::t.models.permission.fields');
+    }
 }

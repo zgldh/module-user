@@ -31,11 +31,11 @@
         <div class="box-body datatable-loading-section">
           <div class="search">
             <el-form :inline="true" :model="searchForm" ref="searchForm">
-              <el-form-item label="Name">
-                <el-input v-model="searchForm.name" placeholder="Name" column="name" operator="like"></el-input>
+              <el-form-item :label="$t('module_user.models.permission.fields.name')">
+                <el-input v-model="searchForm.name" column="name" operator="like"></el-input>
               </el-form-item>
-              <el-form-item label="Label">
-                <el-input v-model="searchForm.label" placeholder="Lable" column="label" operator="like"></el-input>
+              <el-form-item :label="$t('module_user.models.permission.fields.label')">
+                <el-input v-model="searchForm.label" column="label" operator="like"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button-group>
@@ -101,19 +101,19 @@
               </el-table-column>
               <el-table-column
                       prop="name"
-                      label="Name"
+                      :label="$t('module_user.models.permission.fields.name')"
                       sortable="custom"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
                       prop="label"
-                      label="Label"
+                      :label="$t('module_user.models.permission.fields.label')"
                       sortable="custom"
                       show-overflow-tooltip>
               </el-table-column>
               <el-table-column
                       prop="created_at"
-                      label="Created At"
+                      :label="$t('module_user.models.permission.fields.created_at')"
                       sortable="custom"
                       searchable="false"
                       show-overflow-tooltip>
@@ -149,8 +149,8 @@
 </template>
 
 <script type="javascript">
-  import { mixin } from "resources/assets/js/commons/ListHelpers.js";
-  import { loadModuleLanguage } from 'resources/assets/js/commons/LanguageHelper';
+  import {mixin} from "resources/assets/js/commons/ListHelpers.js";
+  import {loadModuleLanguage} from 'resources/assets/js/commons/LanguageHelper';
 
   export default {
     mixins: [
@@ -194,7 +194,7 @@
                   confirmButtonText: this.$i18n.t('scaffold.terms.confirm'),
                   cancelButtonText: this.$i18n.t('scaffold.terms.cancel'),
                   type: 'warning'
-        }).then(() => {
+                }).then(() => {
           return this._onBundle('delete');
         }).then(result => {
           this.$message({
