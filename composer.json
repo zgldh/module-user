@@ -33,7 +33,6 @@
     "post-create-project-cmd": [
     ],
     "post-install-cmd": [
-      "@php artisan zgldh:module:install zgldh/module-user"
     ],
     "post-update-cmd": [
     ]
