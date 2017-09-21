@@ -18,7 +18,6 @@ class AddColumnsToUsersTable extends Migration
             $table->tinyInteger('is_active')->default(1);
             $table->timestamp('last_login_at')->nullable();
             $table->integer('login_times')->default(0);
-            $table->integer('avatar_id')->nullable();
             $table->softDeletes();
         });
         Schema::table('roles', function (Blueprint $table) {
@@ -43,7 +42,6 @@ class AddColumnsToUsersTable extends Migration
             $table->dropColumn('is_active');
             $table->dropColumn('last_login_at');
             $table->dropColumn('login_times');
-            $table->dropColumn('avatar_id');
             $table->dropColumn('deleted_at');
         });
         Schema::table('roles', function (Blueprint $table) {

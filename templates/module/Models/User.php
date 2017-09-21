@@ -39,7 +39,6 @@ class User extends Authenticatable
         'is_active',
         'last_login_at',
         'login_times',
-        'avatar_id'
     ];
 
     protected static $logAttributes = [
@@ -51,7 +50,6 @@ class User extends Authenticatable
         'is_active',
         'last_login_at',
         'login_times',
-        'avatar_id'
     ];
 
     protected $hidden = [
@@ -70,7 +68,6 @@ class User extends Authenticatable
         'is_active'     => 'integer',
         'last_login_at' => 'datetime',
         'login_times'   => 'integer',
-        'avatar_id'   => 'integer',
     ];
 
     protected $dates = ['deleted_at'];
@@ -103,7 +100,7 @@ class User extends Authenticatable
 
     public function avatar()
     {
-        return $this->belongsTo(Upload::class, 'avatar_id', 'id');
+        return $this->morphOne('Modules\Upload\Models\Upload', 'uploadable')->where('uploads.type', 'avatar');
     }
 
     public function isAdmin()

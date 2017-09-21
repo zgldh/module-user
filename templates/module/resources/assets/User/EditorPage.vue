@@ -8,10 +8,13 @@
       </h1>
       <ol class="breadcrumb">
         <li>
-          <router-link to="/"><i class="fa fa-dashboard"></i> {{$t('module_dashboard.title')}}</router-link>
+          <router-link to="/"><i class="fa fa-dashboard"></i>
+            {{$t('module_dashboard.title')}}
+          </router-link>
         </li>
         <li>
-          <router-link to="/user/list">{{$t('module_user.models.user.title')}}</router-link>
+          <router-link to="/user/list">{{$t('module_user.models.user.title')}}
+          </router-link>
         </li>
         <li class="active" v-if="form.id">{{$t('scaffold.terms.edit')}}</li>
         <li class="active" v-else>{{$t('scaffold.terms.create')}}</li>
@@ -24,8 +27,11 @@
       <div class="box box-default">
 
         <div class="box-header with-border">
-          <el-button type="default" @click="onCancel" icon="close">{{$t('scaffold.terms.back')}}</el-button>
-          <el-button type="primary" @click="onSave" icon="check" :loading="saving||loading">
+          <el-button type="default" @click="onCancel" icon="close">
+            {{$t('scaffold.terms.back')}}
+          </el-button>
+          <el-button type="primary" @click="onSave" icon="check"
+                     :loading="saving||loading">
             {{$t('scaffold.terms.save')}}
           </el-button>
         </div>
@@ -33,7 +39,8 @@
 
         <!-- form start -->
         <div class="box-body">
-          <el-alert class="missing-errors" v-if="missingErrors.length" v-for="errorMessage in missingErrors"
+          <el-alert class="missing-errors" v-if="missingErrors.length"
+                    v-for="errorMessage in missingErrors"
                     :key="errorMessage"
                     :title="errorMessage" type="error" show-icon></el-alert>
 
@@ -42,40 +49,50 @@
             <el-form-item :label="$t('scaffold.fields.id')" v-if="form.id">
               <el-input v-model="form.id" disabled></el-input>
             </el-form-item>
-            <el-form-item :label="$t('module_user.models.user.fields.name')" prop="name" :error="errors.name">
+            <el-form-item :label="$t('module_user.models.user.fields.name')" prop="name"
+                          :error="errors.name">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('module_user.models.user.fields.email')" prop="email" :error="errors.email">
+            <el-form-item :label="$t('module_user.models.user.fields.email')" prop="email"
+                          :error="errors.email">
               <el-input v-model="form.email"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('module_user.models.user.fields.password')" prop="password" :error="errors.password">
+            <el-form-item :label="$t('module_user.models.user.fields.password')"
+                          prop="password"
+                          :error="errors.password">
               <el-input v-model="form.password" type="password"></el-input>
               <p class="assist-tip" v-if="form.id">
                 {{$t('module_user.terms.leave_field_blank_if_dont_want_change_password')}}</p>
             </el-form-item>
-            <el-form-item :label="$t('module_user.models.user.fields.gender')" prop="gender" :error="errors.gender">
+            <el-form-item :label="$t('module_user.models.user.fields.gender')"
+                          prop="gender" :error="errors.gender">
               <el-radio-group v-model="form.gender">
                 <el-radio label="male">男 Male</el-radio>
                 <el-radio label="female">女 Female</el-radio>
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item :label="$t('module_user.models.user.fields.avatar')" prop="avatar" :error="errors.avatar">
-              <single-image-upload-component v-model="form.avatar_id"
-                                             :data="{type:'avatar'}"></single-image-upload-component>
+            <el-form-item :label="$t('module_user.models.user.fields.avatar')"
+                          prop="avatar" :error="errors.avatar">
+              <upload-component v-model="form.avatar" list-type="picture-card"
+                                accept="image/*"></upload-component>
             </el-form-item>
 
-            <el-form-item :label="$t('module_user.models.user.fields.mobile')" prop="mobile" :error="errors.mobile">
+            <el-form-item :label="$t('module_user.models.user.fields.mobile')"
+                          prop="mobile" :error="errors.mobile">
               <el-input v-model="form.mobile"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('module_user.models.user.fields.is_active')" prop="is_active" :error="errors.is_active">
+            <el-form-item :label="$t('module_user.models.user.fields.is_active')"
+                          prop="is_active"
+                          :error="errors.is_active">
               <el-radio-group v-model="form.is_active">
                 <el-radio :label="1">Active</el-radio>
                 <el-radio :label="0">Inactive</el-radio>
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item :label="$t('module_user.models.user.fields.roles')" prop="roles" :error="errors.roles">
+            <el-form-item :label="$t('module_user.models.user.fields.roles')" prop="roles"
+                          :error="errors.roles">
               <el-select class="role-selector" v-model="form.roles" filterable multiple>
                 <el-option
                         v-for="role in roles"
@@ -86,8 +103,11 @@
               </el-select>
             </el-form-item>
 
-            <el-form-item :label="$t('module_user.models.user.fields.permissions')" prop="permissions" :error="errors.permissions">
-              <el-select class="permission-selector" v-model="form.permissions" filterable multiple>
+            <el-form-item :label="$t('module_user.models.user.fields.permissions')"
+                          prop="permissions"
+                          :error="errors.permissions">
+              <el-select class="permission-selector" v-model="form.permissions" filterable
+                         multiple>
                 <el-option
                         v-for="permission in permissions"
                         :key="permission.id"
@@ -96,10 +116,12 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item :label="$t('module_user.models.user.fields.last_login_at')" v-if="form.id">
+            <el-form-item :label="$t('module_user.models.user.fields.last_login_at')"
+                          v-if="form.id">
               <el-input v-model="form.last_login_at" disabled></el-input>
             </el-form-item>
-            <el-form-item :label="$t('module_user.models.user.fields.login_times')" v-if="form.id">
+            <el-form-item :label="$t('module_user.models.user.fields.login_times')"
+                          v-if="form.id">
               <el-input v-model="form.login_times" disabled></el-input>
             </el-form-item>
           </el-form>
@@ -107,8 +129,11 @@
         <!-- /.box-body -->
 
         <div class="box-footer">
-          <el-button type="default" @click="onCancel" icon="close">{{$t('scaffold.terms.back')}}</el-button>
-          <el-button type="primary" @click="onSave" icon="check" :loading="saving||loading">
+          <el-button type="default" @click="onCancel" icon="close">
+            {{$t('scaffold.terms.back')}}
+          </el-button>
+          <el-button type="primary" @click="onSave" icon="check"
+                     :loading="saving||loading">
             {{$t('scaffold.terms.save')}}
           </el-button>
         </div>
@@ -123,7 +148,7 @@
 <script type="javascript">
   import {mixin} from "resources/assets/js/commons/EditorHelper.js";
   import {loadModuleLanguage} from 'resources/assets/js/commons/LanguageHelper';
-  import SingleImageUploadComponent from 'Modules/Upload/resources/assets/SingleImageUploadComponent.vue';
+  import UploadComponent from 'Modules/Upload/resources/assets/Components/Upload.vue';
 
   export default  {
     mixins: [
@@ -142,7 +167,7 @@
           is_active: 1,
           last_login_at: null,
           login_times: 0,
-          avatar_id: null,  //如果这个参数是该数据表内有的字段，则写字段名，否则写关系名
+          avatar: null,
           roles: [],
           permissions: []
         },
@@ -151,12 +176,12 @@
       };
     },
     components: {
-      SingleImageUploadComponent
+      UploadComponent
     },
     computed: {
       resource: function () {
         var resourceURL = '/user';
-        return (this.form.id ? resourceURL + '/' + this.form.id : resourceURL) + '?_with=roles,permissions';
+        return (this.form.id ? resourceURL + '/' + this.form.id : resourceURL) + '?_with=avatar,roles,permissions';
       }
     },
     created: function () {
