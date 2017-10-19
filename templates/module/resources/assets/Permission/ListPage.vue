@@ -122,7 +122,7 @@
                       fixed="right"
                       :label="$t('scaffold.terms.actions')"
                       width="120">
-                <template scope="scope">
+                <template slot-scope="scope">
                   <el-button-group>
                     <el-button @click="onEditClick(scope.row,scope.column,scope.$index,scope.store)" type="default"
                                size="small" icon="edit" :title="$t('scaffold.terms.edit')"></el-button>

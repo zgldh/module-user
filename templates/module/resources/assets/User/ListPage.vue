@@ -140,7 +140,7 @@
                       sortable="custom"
                       searchable="false"
                       show-overflow-tooltip>
-                <template scope="scope">
+                <template slot-scope="scope">
                   <el-tag v-if="scope.row.last_login_at">{{ scope.row.last_login_at }}</el-tag>
                   <el-tag type="grey" v-if="scope.row.login_times">{{ scope.row.login_times }}</el-tag>
                 </template>
@@ -156,7 +156,7 @@
                       fixed="right"
                       :label="$t('scaffold.terms.actions')"
                       width="120">
-                <template scope="scope">
+                <template slot-scope="scope">
                   <el-button-group>
                     <el-button @click="onEditClick(scope.row,scope.column,scope.$index,scope.store)" type="default"
                                size="small" icon="edit" :title="$t('scaffold.terms.edit')"></el-button>
